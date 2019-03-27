@@ -1,5 +1,9 @@
 package Ihm;
 
-public class BoutonGenerique {
+import javax.swing.JButton;
+
+public class BoutonGenerique extends JButton{
+	
+	
 
 }

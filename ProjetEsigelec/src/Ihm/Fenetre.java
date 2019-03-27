@@ -9,9 +9,10 @@ public class Fenetre extends JFrame{
 	
 	private String titreFenetre = "GÏT";
 	private Dimension dimensionFenetre = new Dimension(750,600);
-	private JPanel lePanel;
+	private JPanel lePanel = new PanelConnexion();
 	
 	public Fenetre(){
+		
 		this.setTitle(titreFenetre);
 		this.setSize(dimensionFenetre);
 		this.setLocationRelativeTo(null);
