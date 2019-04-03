@@ -1,5 +1,7 @@
 package moteur;
 
+import java.util.ArrayList;
+
 /**
  * 
  * @author Gael Leroux et Ronan Le Viennesse version : La classe utilisateur du
@@ -7,19 +9,24 @@ package moteur;
  */
 public class Utilisateur {
 
-// déclarations des variables de la classe Utilisateur  :	
+// déclarations des variables de la classe Utilisateur  :
+	private int reference  ;
 	private String identifiant;
 	private String mot_de_passe;
 	private boolean isGestionnaire;
-//(rajouter liste projet et historique )
 	
+	
+	private ArrayList<ProjetJava> listeprojet;
+	private Historique historique_utilisateur;
+
 	// le constructeur de Utilisateur
 	/**
 	 * Constructeur de la classe Utilisateur
 	 * 
 	 * @param identifiaznt , mot_de_passe ,type
 	 */
-	public Utilisateur(String id, String mdp, boolean g) {
+	public Utilisateur(int ref ,String id, String mdp, boolean g) {
+		this.reference = ref ;
 		this.identifiant = id;
 		this.mot_de_passe = mdp;
 		this.isGestionnaire = g;
@@ -27,13 +34,18 @@ public class Utilisateur {
 
 // les getters de Utilisateur :	
 	/**
-	 * getter identifiant permet de récupérer l'identifiaznt d'un utilisateur
+	 * getter identifiant permet de récupérer la reférence d'un utilisateur
 	 * 
-	 * @return identifiant
+	 * @return référence 
 	 */
-	public String GetIdentifiant() {
+	public int GetReference () {
+		return reference ;
+	}
+	
+	public String GetIdentifiant () {
 		return identifiant;
 	}
+
 
 	/**
 	 * getter mot_de_passe permet de récupérer le mot_de_passe d'un utilisateur
@@ -52,6 +64,21 @@ public class Utilisateur {
 	public boolean GetIsGestionnaire() {
 		return isGestionnaire;
 	}
+	/**
+	 * getter pour récupérer l'historique d'un utilisateur 
+	 * @return historique_utilisateur
+	 */
+    public Historique GetHistoriqueUtilisateur () {
+    	return historique_utilisateur ;
+    }
+    /**
+     * getter pour récupérer la liste des projet d'un utilisateur 
+     * @return listeprojet
+     */
+    public ArrayList<ProjetJava> GetListeProjet ()
+    {
+    	return listeprojet ;
+    }
 
 // les setters de Utilisateur 
 	/**
@@ -82,4 +109,8 @@ public class Utilisateur {
 	public void SetIsGestionnaire(boolean g) {
 		this.isGestionnaire = g;
 	}
+	
+
+	
+	
 }
