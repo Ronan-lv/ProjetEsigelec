@@ -15,7 +15,6 @@ public class PanelGenerique extends JPanel{
 	protected final Font policeTaille2 = new Font("Arial", Font.BOLD, 20);
 		
 	public PanelGenerique() {
-		this.setBackground(couleurDeFond);
 	
 	}
 }

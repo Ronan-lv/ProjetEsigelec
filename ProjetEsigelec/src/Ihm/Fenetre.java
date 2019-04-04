@@ -9,7 +9,7 @@ public class Fenetre extends JFrame{
 	
 	private String titreFenetre = "GÏT";
 	private Dimension dimensionFenetre = new Dimension(750,600);
-	private JPanel lePanel = new PanelConnexion();
+	private JPanel lePanel = new PanelMenu();
 	
 	public Fenetre(){
 		
