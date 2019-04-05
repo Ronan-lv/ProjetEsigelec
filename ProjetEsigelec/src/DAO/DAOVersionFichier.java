@@ -6,9 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import moteur.Utilisateur;
+import moteur.VersionFichier;
 
-public class DAOUtilisateur {
+/**
+ * Classe DAO VersionFichier ,permet de faire le lien avec la table version  (BDD)
+ * @author Gael Le Roux et Ronan Le Viennesse 
+ * version :
+ */
+public class DAOVersionFichier {
 	/**
 	* Paramètres de connexion à la base de données oracle URL, LOGIN et PASS
 	* sont des constantes
@@ -20,7 +25,7 @@ public class DAOUtilisateur {
 	* Constructeur de la classe
 	*
 	*/
-	public DAOUtilisateur() {
+	public DAOVersionFichier() {
 	// chargement du pilote de bases de données
 	try {
 	Class.forName("oracle.jdbc.OracleDriver");
@@ -31,13 +36,13 @@ public class DAOUtilisateur {
 	
 	}
 	/**
-	* Permet d'ajouter un utilisateur dans la table utilisateur Le mode est auto-commit
+	* Permet d'ajouter un ProjetJava dans la table ProjetJava Le mode est auto-commit
 	* par défaut : chaque insertion est validée
 	*
-	* @param utilisateur l'utilisateur à ajouter
+	* @param projetjava le projet à ajouter
 	* @return retourne le nombre de lignes ajoutées dans la table
 	*/
-	public int ajouter(Utilisateur uti) {
+	public int ajouter(ProjetJava projet) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	int retour = 0;
@@ -49,12 +54,13 @@ public class DAOUtilisateur {
 	// à communiquer dans l'insertion
 	// les getters permettent de récupérer les valeurs des attributs
 	// souhaités
-	ps = con.prepareStatement("INSERT INTO utilisateur (id,"
-			+ "identifiant,mdp,type) VALUES (?, ?, ?, ?)");
-	ps.setInt(1, uti.GetReference() );
-	ps.setString(2, uti.GetIdentifiant());
-	ps.setString(3, uti.GetMotDePasse());
-	ps.setInt(4, uti.GetIsGestionnaire()?1:0);
+	ps = con.prepareStatement("INSERT INTO fichier (id,"
+			+ "nom,datefichier,destination ,id_fichier_uti) VALUES (?, ?, ?, ? ,?)");
+	ps.setInt(1, projet.GetIdProjet() );
+	ps.setString(2, projet.GetNomProjet());
+	ps.setString(3, projet.GetDestinationProjet());
+	ps.setDate(4, projet.GetDateProjet());
+	ps.setInt(5, projet.GetFichierUtilisateur());
 	// Exécution de la requête
 	retour = ps.executeUpdate();
 	} catch (Exception e) {
@@ -67,21 +73,23 @@ public class DAOUtilisateur {
 	return retour;
 	}
 	/**
-	* Permet de récupérer un utilisateur à partir de sa référence
+	* Permet de récupérer un projet java à partir de sa référence utilisateur
 	*
-	* @param reference la référence de l'utilisateur à récupérer
-	* @return l'utilisateur trouvé;
-	null si aucun utilisateur ne correspond à cette référence
+	* @param reference la référence de l'utilisateur 
+	* @return projet trouvé trouvé;
+	null si aucun projetjava ne correspond à cette référence
 	*/
-	public Utilisateur getUtilisateur(int reference) {
+	public ProjetJava GetProjetJava(int reference) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
-	Utilisateur retour = null;
+	ProjetJava retour = null;
 	// connexion à la base de données
 	try {
 	con = DriverManager.getConnection(URL, LOGIN, PASS);
-	ps = con.prepareStatement("SELECT * FROM utlisateur WHERE id = ?");
+	ps = con.prepareStatement("SELECT fichier.id ,fichier.nom ,fichier.date ,fichier.destination "
+			+ "FROM fichier inner join utlisateur ON (fichier.id_fichier_util =utilisateur.id)"
+			+ " WHERE utlisateur.id = ?");
 	ps.setInt(1, reference);
 	// on exécute la requête
 	// rs contient un pointeur situé jusute avant la première ligne
@@ -89,7 +97,7 @@ public class DAOUtilisateur {
 	rs = ps.executeQuery();
 	// passe à la première (et unique) ligne retournée
 	if (rs.next())
-	retour = new Utilisateur(rs.getInt("id"),rs.getString("identifiant"),rs.getString("mdp"),rs.getInt("type")== 1 ? true:false);
+	retour = new ProjetJava (rs.getInt("fichier.id"),rs.getString("fichier.nom"),rs.getString("fichier.destination"),rs.getDate("fichier.date"));
 	} catch (Exception ee) {
 	ee.printStackTrace();
 	} finally {
@@ -101,26 +109,26 @@ public class DAOUtilisateur {
 	return retour;
 	}
 	/**
-	* Permet de récupérer tous les utilisateurs stockés dans la table utilisateur
+	* Permet de récupérer tous les projets stockés dans la table projetjava
 	*
-	* @return une ArrayList d'utilisateur
+	* @return une ArrayList de projet
 	*/
-	public ArrayList<Utilisateur> getListeUtilisateurs() {
+	public ArrayList<ProjetJava> getListeProjetJava() {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
-	ArrayList<Utilisateur> retour = new ArrayList<Utilisateur>();
+	ArrayList<ProjetJava> retour = new ArrayList<ProjetJava>();
 	// connexion à la base de données
 	try {
 	con = DriverManager.getConnection(URL, LOGIN, PASS);
-	ps = con.prepareStatement("SELECT * FROM utilisateur");
+	ps = con.prepareStatement("SELECT * FROM fichier");
 	// on exécute la requête
 	rs = ps.executeQuery();
 	// on parcourt les lignes du résultat
 	while (rs.next())
-	retour.add(new Utilisateur(rs.getInt("id"),
-	rs.getString("identifiant"), rs.getString("mdp"),
-	rs.getInt("type")== 1 ? true:false));
+	retour.add(new ProjetJava(rs.getInt("fichier.id"),
+	rs.getString("fichier.nom"), rs.getString("fichier.destination"),
+	rs.getDate("fichier.date")));
 	} catch (Exception ee) {
 	ee.printStackTrace();
 	} finally {
