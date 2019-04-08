@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import moteur.ProjetJava;
 import moteur.VersionFichier;
 
 /**
