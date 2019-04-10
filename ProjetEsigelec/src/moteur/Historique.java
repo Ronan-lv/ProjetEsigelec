@@ -26,7 +26,7 @@ public class Historique {
 	 * Permet de récupérer le contenu d'un historique 
 	 * @return contenu_hist 
 	 */
-	public String GetContenuHistorique() {
+	public String getContenuHistorique() {
 		return contenu_hist ;
 	}
 	// setter de la classe Historique 
@@ -35,7 +35,7 @@ public class Historique {
 	 * Permet de saisir ou modifier un historique d'un utilisateur 
 	 * @param h
 	 */
-	public void SetContenuHistorique (String h) {
+	public void setContenuHistorique (String h) {
 		this.contenu_hist = h ;
 	}
 }
