@@ -14,8 +14,8 @@ public class DAOUtilisateur {
 	* sont des constantes
 	*/
 	final static String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-	final static String LOGIN = "BDD8"; //exemple BDD8
-	final static String PASS = "BDD8"; //exemple BDD8
+	final static String LOGIN = "C##GAEL"; //exemple BDD8 ou C##GAEL
+	final static String PASS = "digitalx76"; //exemple BDD8 ou digitalx76
 	/**
 	* Constructeur de la classe
 	*
@@ -51,10 +51,10 @@ public class DAOUtilisateur {
 	// souhaités
 	ps = con.prepareStatement("INSERT INTO utilisateur (id,"
 			+ "identifiant,mdp,type) VALUES (?, ?, ?, ?)");
-	ps.setInt(1, uti.GetReference() );
-	ps.setString(2, uti.GetIdentifiant());
-	ps.setString(3, uti.GetMotDePasse());
-	ps.setInt(4, uti.GetIsGestionnaire()?1:0);
+	ps.setInt(1, uti.getReference() );
+	ps.setString(2, uti.getIdentifiant());
+	ps.setString(3, uti.getMotDePasse());
+	ps.setInt(4, uti.getIsGestionnaire()?1:0);
 	// Exécution de la requête
 	retour = ps.executeUpdate();
 	} catch (Exception e) {
@@ -81,7 +81,7 @@ public class DAOUtilisateur {
 	// connexion à la base de données
 	try {
 	con = DriverManager.getConnection(URL, LOGIN, PASS);
-	ps = con.prepareStatement("SELECT * FROM utlisateur WHERE id = ?");
+	ps = con.prepareStatement("SELECT * FROM utilisateur WHERE id = ?");
 	ps.setInt(1, reference);
 	// on exécute la requête
 	// rs contient un pointeur situé jusute avant la première ligne
@@ -132,25 +132,25 @@ public class DAOUtilisateur {
 	return retour;
 	}
 	
-/**	
-	// main permettant de tester la classe
+//---------------------------------------------TEST DE LA DAO-------------------------------------------------	
+	/**	// main permettant de tester la classe utilisateur et DAO Utilisateur 
 	public static void main(String[] args) throws SQLException {
-	ArticleDAO articleDAO = new ArticleDAO();
-	// test de la méthode ajouter
-	Article a1 = new Article(1, "Set de 2 raquettes de ping-pong", 149.9,
-	10);
-	2017-2018 Surveillance de la qualité de l’air en Normandie p 13/15
-	int retour = articleDAO.ajouter(a1);
-	System.out.println(retour + " lignes ajoutées");
-	// test de la méthode getArticle
-	Article a2 = articleDAO.getArticle(1);
-	System.out.println(a2);
+	DAOUtilisateur daoutilisateur = new DAOUtilisateur();
+	
+	// test de la méthode ajouter Utilisateur 
+	Utilisateur u1 = new Utilisateur(3, "jack","digitalx76",true) ;
+	int retour = daoutilisateur.ajouter(u1);
+	System.out.println(retour + " lignes ajoutées"); 
+	
+	// test de la méthode récupérer un utilisateur
+	Utilisateur u2 = daoutilisateur.getUtilisateur(1);
+	System.out.println(u2);
 	// test de la méthode getListeArticles
-	List<Article> liste = articleDAO.getListeArticles();
+	ArrayList<Utilisateur> listeutilisateur = daoutilisateur.getListeUtilisateurs() ;
 	// affichage des articles
-	for (Article art : liste) {
-	System.out.println(art.toString());
+	for (Utilisateur uti : listeutilisateur) {
+	System.out.println(uti.toString());
 	}
-	}
-	*/
+	}	*/	
+	
 }
