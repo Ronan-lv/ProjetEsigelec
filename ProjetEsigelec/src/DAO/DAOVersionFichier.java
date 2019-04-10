@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import moteur.ProjetJava;
 import moteur.VersionFichier;
 
 /**
@@ -20,8 +19,8 @@ public class DAOVersionFichier {
 	* sont des constantes
 	*/
 	final static String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-	final static String LOGIN = "BDD8"; //exemple BDD8
-	final static String PASS = "BDD8"; //exemple BDD8
+	final static String LOGIN = "C##GAEL"; //exemple BDD8 ou C##GAEL
+	final static String PASS = "digitalx76"; //exemple BDD8 ou digitalx76
 	/**
 	* Constructeur de la classe
 	*
@@ -37,13 +36,13 @@ public class DAOVersionFichier {
 	
 	}
 	/**
-	* Permet d'ajouter un ProjetJava dans la table ProjetJava Le mode est auto-commit
+	* Permet d'ajouter une dans la table version Le mode est auto-commit
 	* par défaut : chaque insertion est validée
 	*
-	* @param projetjava le projet à ajouter
+	* @param versionfichier la version à ajouter
 	* @return retourne le nombre de lignes ajoutées dans la table
 	*/
-	public int ajouter(ProjetJava projet) {
+	public int ajouter(VersionFichier version) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	int retour = 0;
@@ -55,13 +54,14 @@ public class DAOVersionFichier {
 	// à communiquer dans l'insertion
 	// les getters permettent de récupérer les valeurs des attributs
 	// souhaités
-	ps = con.prepareStatement("INSERT INTO fichier (id,"
-			+ "nom,datefichier,destination ,id_fichier_uti) VALUES (?, ?, ?, ? ,?)");
-	ps.setInt(1, projet.GetIdProjet() );
-	ps.setString(2, projet.GetNomProjet());
-	ps.setString(3, projet.GetDestinationProjet());
-	ps.setDate(4, projet.GetDateProjet());
-	ps.setInt(5, projet.GetFichierUtilisateur());
+	ps = con.prepareStatement("INSERT INTO version (id,"
+			+ "num_maj,num_min,contenu,description,id_fichier_version) VALUES (?, ?, ?, ?, ?, ?)");
+	ps.setInt(1, version.getIdVersion() );
+	ps.setInt(2,version.getNumeroMaj());
+	ps.setInt(3, version.getNumeroMin());
+	ps.setString(4, version.getContenuVersion());
+	ps.setString(5, version.getContenuDescription());
+	ps.setInt(6, version.getIdFichierVersion());
 	// Exécution de la requête
 	retour = ps.executeUpdate();
 	} catch (Exception e) {
@@ -74,23 +74,21 @@ public class DAOVersionFichier {
 	return retour;
 	}
 	/**
-	* Permet de récupérer un projet java à partir de sa référence utilisateur
+	* Permet de récupérer une version java à partir de sa référence 
 	*
-	* @param reference la référence de l'utilisateur 
-	* @return projet trouvé trouvé;
-	null si aucun projetjava ne correspond à cette référence
+	* @param reference la référence de la version
+	* @return version  trouvé;
+	null si aucune version ne correspond à cette référence
 	*/
-	public ProjetJava GetProjetJava(int reference) {
+	public VersionFichier getVersionFichier(int reference) {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
-	ProjetJava retour = null;
+	VersionFichier retour = null;
 	// connexion à la base de données
 	try {
 	con = DriverManager.getConnection(URL, LOGIN, PASS);
-	ps = con.prepareStatement("SELECT fichier.id ,fichier.nom ,fichier.date ,fichier.destination "
-			+ "FROM fichier inner join utlisateur ON (fichier.id_fichier_util =utilisateur.id)"
-			+ " WHERE utlisateur.id = ?");
+	ps = con.prepareStatement("SELECT * FROM version WHERE id =?");
 	ps.setInt(1, reference);
 	// on exécute la requête
 	// rs contient un pointeur situé jusute avant la première ligne
@@ -98,7 +96,7 @@ public class DAOVersionFichier {
 	rs = ps.executeQuery();
 	// passe à la première (et unique) ligne retournée
 	if (rs.next())
-	retour = new ProjetJava (rs.getInt("fichier.id"),rs.getString("fichier.nom"),rs.getString("fichier.destination"),rs.getDate("fichier.date"));
+	retour = new VersionFichier(rs.getInt("id"),rs.getInt("num_maj"),rs.getInt("num_min"),rs.getString("contenu"),rs.getString("description"),rs.getInt("id_fichier_version"));
 	} catch (Exception ee) {
 	ee.printStackTrace();
 	} finally {
@@ -110,26 +108,26 @@ public class DAOVersionFichier {
 	return retour;
 	}
 	/**
-	* Permet de récupérer tous les projets stockés dans la table projetjava
+	* Permet de récupérer tous les versions stockés dans la table version
 	*
-	* @return une ArrayList de projet
+	* @return une ArrayList de version
 	*/
-	public ArrayList<ProjetJava> getListeProjetJava() {
+	public ArrayList<VersionFichier> getListeVersion() {
 	Connection con = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
-	ArrayList<ProjetJava> retour = new ArrayList<ProjetJava>();
+	ArrayList<VersionFichier> retour = new ArrayList<VersionFichier>();
 	// connexion à la base de données
 	try {
 	con = DriverManager.getConnection(URL, LOGIN, PASS);
-	ps = con.prepareStatement("SELECT * FROM fichier");
+	ps = con.prepareStatement("SELECT * FROM version");
 	// on exécute la requête
 	rs = ps.executeQuery();
 	// on parcourt les lignes du résultat
 	while (rs.next())
-	retour.add(new ProjetJava(rs.getInt("fichier.id"),
-	rs.getString("fichier.nom"), rs.getString("fichier.destination"),
-	rs.getDate("fichier.date")));
+	retour.add(new VersionFichier(rs.getInt("id"),
+	rs.getInt("num_maj"), rs.getInt("num_min"),
+	rs.getString("contenu") ,rs.getString("description"),rs.getInt("id_fichier_version")));
 	} catch (Exception ee) {
 	ee.printStackTrace();
 	} finally {
