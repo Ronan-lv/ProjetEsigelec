@@ -41,7 +41,7 @@ public class PanelConnexion extends PanelGenerique {
 			
 			this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(120, 200, 120, 200), //Empty border => top, left, bottom, right
 															  BorderFactory.createCompoundBorder(
-																	  BorderFactory.createLineBorder(Color.BLACK, 3), 
+																	  BorderFactory.createLineBorder(Color.BLACK, 3, true), 
 																	  BorderFactory.createEmptyBorder(20, 20, 20, 20)
 																	  )));
 					
