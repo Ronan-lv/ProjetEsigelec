@@ -38,11 +38,11 @@ public class Utilisateur {
 	 * 
 	 * @return référence 
 	 */
-	public int GetReference () {
+	public int getReference () {
 		return reference ;
 	}
 	
-	public String GetIdentifiant () {
+	public String getIdentifiant () {
 		return identifiant;
 	}
 
@@ -52,7 +52,7 @@ public class Utilisateur {
 	 * 
 	 * @return mot_de_passe
 	 */
-	public String GetMotDePasse() {
+	public String getMotDePasse() {
 		return mot_de_passe;
 	}
 
@@ -61,21 +61,21 @@ public class Utilisateur {
 	 * 
 	 * @return isGestionnaire
 	 */
-	public boolean GetIsGestionnaire() {
+	public boolean getIsGestionnaire() {
 		return isGestionnaire;
 	}
 	/**
 	 * getter pour récupérer l'historique d'un utilisateur 
 	 * @return historique_utilisateur
 	 */
-    public Historique GetHistoriqueUtilisateur () {
+    public Historique getHistoriqueUtilisateur () {
     	return historique_utilisateur ;
     }
     /**
      * getter pour récupérer la liste des projet d'un utilisateur 
      * @return listeprojet
      */
-    public ArrayList<ProjetJava> GetListeProjet ()
+    public ArrayList<ProjetJava> getListeProjet ()
     {
     	return listeprojet ;
     }
@@ -87,7 +87,7 @@ public class Utilisateur {
 	 * 
 	 * @param identifiant
 	 */
-	public void SetIdentifiant(String id) {
+	public void setIdentifiant(String id) {
 		this.identifiant = id;
 	}
 
@@ -97,7 +97,7 @@ public class Utilisateur {
 	 * 
 	 * @param mot_de_passe
 	 */
-	public void SetMotDePasse(String mdp) {
+	public void setMotDePasse(String mdp) {
 		this.mot_de_passe = mdp;
 	}
 
@@ -106,11 +106,19 @@ public class Utilisateur {
 	 * 
 	 * @param isGestionnaire
 	 */
-	public void SetIsGestionnaire(boolean g) {
+	public void setIsGestionnaire(boolean g) {
 		this.isGestionnaire = g;
 	}
-	
-
+	// méthode de la classe utilisateur  :
+	/**
+	* Redéfinition de la méthode toString permettant de définir la traduction de
+	l'objet en String
+	* pour l'affichage par exemple
+	*/
+	public String toString() {
+	return "Utilisateur["+ reference +"]| Identifiant:" + identifiant
+	+ "| Mot_de_passe: " + mot_de_passe + "| Type:" + isGestionnaire + "]";
+	}
 	
 	
 }
