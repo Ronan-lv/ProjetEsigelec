@@ -6,8 +6,11 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class PanelFichiersReferences extends PanelGenerique {
+public class PanelFichiersReferences extends PanelGenerique implements ActionListener {
 
 
 	private JPanel panelHaut;
@@ -39,7 +42,9 @@ public class PanelFichiersReferences extends PanelGenerique {
 	
 
 	
-    public PanelFichiersReferences() {
+    public PanelFichiersReferences(Fenetre fen) {
+    	
+    	super(fen);
 		
 		
 		//Création & configuration des panels
@@ -66,7 +71,9 @@ public class PanelFichiersReferences extends PanelGenerique {
 		//Création & configuration des composants
 		
 		this.boutonMenu = new JButton("Menu");
+		this.boutonMenu.addActionListener(this);
 		this.boutonLogOut = new JButton("LogOut");
+		this.boutonLogOut.addActionListener(this);
 		
 		this.titrePanel = new JLabel("Fichiers référencés");
 		this.titrePanel.setFont(policeTaille2);
@@ -140,6 +147,22 @@ public class PanelFichiersReferences extends PanelGenerique {
     	}
     	
     }
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if(e.getSource() == this.boutonMenu) {
+			this.fen.setContentPane(new PanelMenu(this.fen));
+			this.fen.revalidate();
+		}
+		
+		if(e.getSource() == this.boutonLogOut) {
+			this.fen.setContentPane(new PanelConnexion(this.fen));
+			this.fen.revalidate();
+		}
+		
+	}
 	
     
     

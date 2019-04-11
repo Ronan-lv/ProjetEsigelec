@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -15,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class PanelExplorateurDeFichiers extends PanelGenerique{
+public class PanelExplorateurDeFichiers extends PanelGenerique implements ActionListener{
 
 	
 	private JPanel panelHaut;
@@ -28,13 +30,16 @@ public class PanelExplorateurDeFichiers extends PanelGenerique{
 	
 	private JFileChooser jfc;
 	
-    public PanelExplorateurDeFichiers()  {
+    public PanelExplorateurDeFichiers(Fenetre fen)  {
 		
-		
+    	super(fen);
+    	
 		//Création & configuration des composants
 		
 		this.boutonMenu = new JButton("Menu");
+		this.boutonMenu.addActionListener(this);
 		this.boutonLogOut = new JButton("LogOut");
+		this.boutonLogOut.addActionListener(this);
 		
 		this.titrePanel = new JLabel("Explorateur de Fichiers");
 		this.titrePanel.setFont(policeTaille2);
@@ -83,6 +88,21 @@ public class PanelExplorateurDeFichiers extends PanelGenerique{
 		
 		
 		
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource() == this.boutonMenu) {
+			this.fen.setContentPane(new PanelMenu(this.fen));
+			this.fen.revalidate();
+		}
+		
+		if(e.getSource() == this.boutonLogOut) {
+			this.fen.setContentPane(new PanelConnexion(this.fen));
+			this.fen.revalidate();
+		}
 		
 	}
 	

@@ -13,8 +13,10 @@ public class PanelGenerique extends JPanel{
 	
 	protected final Font policeTaille1 = new Font("Arial", Font.PLAIN, 15);
 	protected final Font policeTaille2 = new Font("Arial", Font.BOLD, 20);
-		
-	public PanelGenerique() {
 	
+	protected Fenetre fen;
+		
+	public PanelGenerique(Fenetre fen) {
+		this.fen = fen;
 	}
 }
