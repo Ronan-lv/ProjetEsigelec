@@ -177,7 +177,7 @@ public class DAOProjetJava {
 	 * throws SQLException {
 	 *  ArticleDAO articleDAO = new ArticleDAO(); 
 	 * // test de la
-	 * méthode ajouter Article a1 = new Article(1, "Set de 2 raquettes de
+ méthode ajouter Article a1 = new Article(1, "Set de 2 raquettes de
 	 * ping-pong", 149.9, 10); 2017-2018 Surveillance de la qualité de l’air en
 	 * Normandie p 13/15 int retour = articleDAO.ajouter(a1);
 	 * System.out.println(retour + " lignes ajoutées"); // test de la méthode

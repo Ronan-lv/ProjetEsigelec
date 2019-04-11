@@ -38,13 +38,13 @@ public class PanelConnexion extends PanelGenerique {
 			
 			this.setLayout(new GridLayout(5,0,0,20)); //Les 2 dernières valeurs correspondent respectivement à l'espacement entre les lignes et les colonnes
 			
-			
 			this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(120, 200, 120, 200), //Empty border => top, left, bottom, right
 															  BorderFactory.createCompoundBorder(
 																	  BorderFactory.createLineBorder(Color.BLACK, 3), 
 																	  BorderFactory.createEmptyBorder(20, 20, 20, 20)
 																	  )));
 					
+			
 			
 			this.add(texteTitre);
 			this.add(champLogin);

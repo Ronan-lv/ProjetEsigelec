@@ -7,9 +7,13 @@ import javax.swing.JPanel;
 
 public class Fenetre extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String titreFenetre = "GÏT";
 	private Dimension dimensionFenetre = new Dimension(750,600);
-	private JPanel lePanel = new PanelExplorateurDeFichiers();
+	private JPanel lePanel = new PanelGestionDesComptes();
 	
 	public Fenetre(){
 		

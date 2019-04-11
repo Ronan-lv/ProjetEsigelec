@@ -113,7 +113,7 @@ public class DAOUtilisateur {
 	// connexion à la base de données
 	try {
 	con = DriverManager.getConnection(URL, LOGIN, PASS);
-	ps = con.prepareStatement("SELECT * FROM utilisateur");
+	ps = con.prepareStatement("SELECT * FROM utilisateur ORDER BY id ASC");
 	// on exécute la requête
 	rs = ps.executeQuery();
 	// on parcourt les lignes du résultat
