@@ -117,9 +117,9 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		//Ajouts des composants dans les panels
 		
 		
-		this.panelHaut.add(this.boutonMenu);
-		this.panelHaut.add(Box.createRigidArea(new Dimension(10, 0)));
 		this.panelHaut.add(this.boutonLogOut);
+		this.panelHaut.add(Box.createRigidArea(new Dimension(10, 0)));
+		this.panelHaut.add(this.boutonMenu);
 		this.panelHaut.add(Box.createHorizontalGlue());
 		
 		this.panelGauche.add(this.titrePanelGauche);
