@@ -132,6 +132,33 @@ public class DAOUtilisateur {
 	return retour;
 	}
 	
+	public ArrayList<String> getListeIdentifiant() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<String> retour = new ArrayList<String>();
+		// connexion à la base de données
+		try {
+		con = DriverManager.getConnection(URL, LOGIN, PASS);
+		ps = con.prepareStatement("SELECT identifiant FROM utilisateur ORDER BY id ASC");
+		// on exécute la requête
+		rs = ps.executeQuery();
+		// on parcourt les lignes du résultat
+		while (rs.next())
+		retour.add(rs.getString("identifiant"));
+		} catch (Exception ee) {
+		ee.printStackTrace();
+		} finally {
+		// fermeture du rs, du preparedStatement et de la connexion
+		try { if (rs != null) rs.close();} catch (Exception ignore) {}
+		try { if (ps != null) ps.close();} catch (Exception ignore) {}
+		try { if (con != null) con.close();} catch (Exception ignore) {}
+		}
+		return retour;
+		}
+	
+	
+	
 //---------------------------------------------TEST DE LA DAO-------------------------------------------------	
 	/**	// main permettant de tester la classe utilisateur et DAO Utilisateur 
 	public static void main(String[] args) throws SQLException {
@@ -145,7 +172,7 @@ public class DAOUtilisateur {
 	// test de la méthode récupérer un utilisateur
 	Utilisateur u2 = daoutilisateur.getUtilisateur(1);
 	System.out.println(u2);
-	// test de la méthode getListeArticles
+	// test de la méthode getListeUtilisateur
 	ArrayList<Utilisateur> listeutilisateur = daoutilisateur.getListeUtilisateurs() ;
 	// affichage des articles
 	for (Utilisateur uti : listeutilisateur) {

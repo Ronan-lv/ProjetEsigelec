@@ -132,4 +132,13 @@ public class ProjetJava {
 	public void setIdFichierUtilisateur(int id_fichier_u) {
 		this.id_fichier_utilisateur = id_fichier_u;
 	}
+	// méthode de la classe ProjetJava 
+	/**
+	* Redéfinition de la méthode toString permettant de définir la traduction de
+	l'objet en String
+	* pour l'affichage par exemple
+	*/
+	public String toString() {
+	return "["+id_projet+"]| Nom:"+nom_projet+"| destination:" +destination_projet+ "| Date:" +date_projet+"|Utilisateur:"+id_fichier_utilisateur;
+	}
 }

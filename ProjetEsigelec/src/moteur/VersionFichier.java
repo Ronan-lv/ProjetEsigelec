@@ -141,4 +141,15 @@ private int  id_version ;
 		this.id_fichier_version = id_fichier_v;
 
 	}
+	// méthode de la classe VersionFichier  :
+	/**
+	* Redéfinition de la méthode toString permettant de définir la traduction de
+	l'objet en String
+	* pour l'affichage par exemple
+	*/
+	public String toString() {
+	return "["+id_version+"]| version:["+numéro_maj+"."+numéro_min+"]| "
+			+ "contenu:"+contenu_version+"|description:"+contenu_description+"|projet:["+id_fichier_version+"]" ;
+	
+	}
 }

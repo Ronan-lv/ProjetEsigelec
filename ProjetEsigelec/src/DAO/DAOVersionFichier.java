@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import moteur.VersionFichier;
@@ -138,25 +139,25 @@ public class DAOVersionFichier {
 	}
 	return retour;
 	}
+	//-----------------------------------------TEST DE LA DAO VERSIONFICHIER ---------------------------------------
 	
 /**	
 	// main permettant de tester la classe
 	public static void main(String[] args) throws SQLException {
-	ArticleDAO articleDAO = new ArticleDAO();
+	DAOVersionFichier DAOversion = new DAOVersionFichier();
 	// test de la méthode ajouter
-	Article a1 = new Article(1, "Set de 2 raquettes de ping-pong", 149.9,
-	10);
-	2017-2018 Surveillance de la qualité de l’air en Normandie p 13/15
-	int retour = articleDAO.ajouter(a1);
+	VersionFichier v1 = new VersionFichier(1,1,0,"contenu1","description1" , 1);
+
+	int retour = DAOversion.ajouter(v1);
 	System.out.println(retour + " lignes ajoutées");
 	// test de la méthode getArticle
-	Article a2 = articleDAO.getArticle(1);
-	System.out.println(a2);
+	VersionFichier v2 = DAOversion.getVersionFichier(1);
+	System.out.println(v2);
 	// test de la méthode getListeArticles
-	List<Article> liste = articleDAO.getListeArticles();
+	ArrayList<VersionFichier> liste = DAOversion.getListeVersion();
 	// affichage des articles
-	for (Article art : liste) {
-	System.out.println(art.toString());
+	for (VersionFichier v : liste) {
+	System.out.println(v.toString());
 	}
 	}
 	*/

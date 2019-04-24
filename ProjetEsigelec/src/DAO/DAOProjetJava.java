@@ -1,9 +1,11 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import moteur.ProjetJava;
@@ -52,7 +54,7 @@ public class DAOProjetJava {
 			// les getters permettent de récupérer les valeurs des attributs
 			// souhaités
 			ps = con.prepareStatement(
-					"INSERT INTO fichier (id,nom,destination,datefichier,id_fichier_uti) VALUES (?, ?, ?, ? ,?)");
+					"INSERT INTO fichier (id,nom,destination,date_fichier,id_fichier_uti) VALUES (?, ?, ?, ? ,?)");
 			ps.setInt(1, projet.getIdProjet());
 			ps.setString(2, projet.getNomProjet());
 			ps.setString(3, projet.getDestinationProjet());
@@ -93,9 +95,9 @@ public class DAOProjetJava {
 		// connexion à la base de données
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT fichier.id ,fichier.nom ,fichier.destination,fichier.date "
-					+ "FROM fichier inner join utlisateur ON (fichier.id_fichier_util =utilisateur.id)"
-					+ " WHERE utlisateur.id = ?");
+			ps = con.prepareStatement("SELECT *"
+					+ "FROM fichier INNER JOIN utilisateur ON (utilisateur.id = id_fichier_uti) "
+					+ "WHERE utilisateur.id = ?");
 			ps.setInt(1, reference);
 			// on exécute la requête
 			// rs contient un pointeur situé jusute avant la première ligne
@@ -103,9 +105,9 @@ public class DAOProjetJava {
 			rs = ps.executeQuery();
 			// passe à la première (et unique) ligne retournée
 			if (rs.next())
-				retour = new ProjetJava(rs.getInt("fichier.id"), rs.getString("fichier.nom"),
-						rs.getString("fichier.destination"), rs.getDate("fichier.date"),
-						rs.getInt("fichier.id_fichier_utilisateur)"));
+				retour = new ProjetJava(rs.getInt("id"), rs.getString("nom"),
+						rs.getString("destination"), rs.getDate("date_fichier"),
+						rs.getInt("id_fichier_uti"));
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		} finally {
@@ -147,8 +149,8 @@ public class DAOProjetJava {
 			rs = ps.executeQuery();
 			// on parcourt les lignes du résultat
 			while (rs.next())
-				retour.add(new ProjetJava(rs.getInt("fichier.id"), rs.getString("fichier.nom"),
-						rs.getString("fichier.destination"), rs.getDate("fichier.date") , rs.getInt("fichier.id_fichier_utilisateur")));
+				retour.add(new ProjetJava(rs.getInt("id"), rs.getString("nom"),
+						rs.getString("destination"), rs.getDate("date_fichier") , rs.getInt("id_fichier_uti")));
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		} finally {
@@ -171,19 +173,79 @@ public class DAOProjetJava {
 		}
 		return retour;
 	}
-
+		/**
+		 * Permet de récupérer tous les projets stockés dans la table projetjava pour un utilisateur donné 
+		 *
+		 * @return une ArrayList de projet
+		 */
+		public ArrayList<ProjetJava> getListeProjetJavaUtilisateur( int reference) {
+			Connection con = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			ArrayList<ProjetJava> retour = new ArrayList<ProjetJava>();
+			// connexion à la base de données
+			try {
+				con = DriverManager.getConnection(URL, LOGIN, PASS);
+				ps = con.prepareStatement("SELECT * "
+						+ "FROM fichier INNER JOIN utilisateur ON (utilisateur.id = id_fichier_uti)"
+						+ " WHERE utilisateur.id = ? ");
+				ps.setInt(1, reference);
+				
+				// on exécute la requête
+				rs = ps.executeQuery();
+				// on parcourt les lignes du résultat
+				while (rs.next())
+					retour.add(new ProjetJava(rs.getInt("id"), rs.getString("nom"),
+							rs.getString("destination"), rs.getDate("date_fichier") , rs.getInt("id_fichier_uti")));
+			} catch (Exception ee) {
+				ee.printStackTrace();
+			} finally {
+				// fermeture du rs, du preparedStatement et de la connexion
+				try {
+					if (rs != null)
+						rs.close();
+				} catch (Exception ignore) {
+				}
+				try {
+					if (ps != null)
+						ps.close();
+				} catch (Exception ignore) {
+				}
+				try {
+					if (con != null)
+						con.close();
+				} catch (Exception ignore) {
+				}
+			}
+			return retour;
+	}
+    //------------------------------------TEST DAO PROJETJAVA---------------------------------------------- 
 	/**
-	 * // main permettant de tester la classe public static void main(String[] args)
-	 * throws SQLException {
-	 *  ArticleDAO articleDAO = new ArticleDAO(); 
-	 * // test de la
- méthode ajouter Article a1 = new Article(1, "Set de 2 raquettes de
-	 * ping-pong", 149.9, 10); 2017-2018 Surveillance de la qualité de l’air en
-	 * Normandie p 13/15 int retour = articleDAO.ajouter(a1);
-	 * System.out.println(retour + " lignes ajoutées"); // test de la méthode
-	 * getArticle Article a2 = articleDAO.getArticle(1); System.out.println(a2); //
-	 * test de la méthode getListeArticles List<Article> liste =
-	 * articleDAO.getListeArticles(); // affichage des articles for (Article art :
-	 * liste) { System.out.println(art.toString()); } }
+	// main permettant de tester la classe 
+		 public static void main(String[] args) throws SQLException {
+		   DAOProjetJava DAOprojet = new DAOProjetJava(); 
+		   
+		  // test de la méthode ajouter 
+
+		   ProjetJava p1 = new ProjetJava(1, "projet_test","destination 1", new Date(System.currentTimeMillis()) , 1);
+	      int retour = DAOprojet.ajouter(p1);
+		  System.out.println(retour + " lignes ajoutées"); 
+		 // test de la méthode getArticle 
+		  ProjetJava p2 = DAOprojet.getProjetJava(1);
+		  System.out.println(p2); 
+		  
+		  // test de la méthode getListeProjet 
+		  ArrayList<ProjetJava> liste = DAOprojet.getListeProjetJava(); 
+		  // affichage des projets 
+		  for (ProjetJava proj :liste) { 
+			  System.out.println(proj.toString());  
+			  } 
+			  
+			  // test de la méthode getListeProjetJavaUtilisateur
+			   ArrayList<ProjetJava> liste_projet_utilisateur = DAOprojet.gestListeProjetJavaUtilisateur(1)
+			     // affichage des projets 
+		  for (ProjetJava proj :liste_projet_utilisateur) { 
+			  System.out.println(proj.toString());
+		  }
 	 */
 }
