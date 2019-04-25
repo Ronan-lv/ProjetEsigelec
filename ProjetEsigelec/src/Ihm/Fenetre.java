@@ -11,9 +11,9 @@ public class Fenetre extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String titreFenetre = "GÏT";
+	private String titreFenetre = "Gï¿½T";
 	private Dimension dimensionFenetre = new Dimension(750,600);
-	private JPanel lePanel = new PanelGestionDesComptes();
+	private JPanel lePanel = new PanelConnexion(this);
 	
 	public Fenetre(){
 		
@@ -26,5 +26,7 @@ public class Fenetre extends JFrame{
 		
 		this.setVisible(true);
 	}
+	
+
 		
 }
