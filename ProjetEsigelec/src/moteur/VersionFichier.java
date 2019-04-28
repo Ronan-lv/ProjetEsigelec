@@ -9,12 +9,12 @@ package moteur;
 public class VersionFichier {
 
 	// declaration des variables de la classe VersionFichier
-private int  id_version ;
+	private int  id_version ;
 	private int numéro_min;
 	private int numéro_maj;
 	private String contenu_version;
 	private String contenu_description;
-	private  int id_fichier_version ;
+	private  int id_projet_java ;
 
 	// le constructeur de la classe VersionFichier
 	/**
@@ -24,13 +24,13 @@ private int  id_version ;
 	 * @param majeur
 	 * @param contenu_v
 	 */
-	public VersionFichier(int id_v ,int mineur, int majeur, String contenu_v, String contenu_d , int id_fichier_v) {
+	public VersionFichier(int id_v ,int mineur, int majeur, String contenu_v, String contenu_d , int id_projet_java) {
 		this.id_version = id_v ;
 		this.numéro_min = mineur;
 		this.numéro_maj = majeur;
 		this.contenu_version = contenu_v;
 		this.contenu_description = contenu_d;
-		this.id_fichier_version = id_fichier_v ;
+		this.id_projet_java = id_projet_java ;
 
 	}
 
@@ -84,7 +84,7 @@ private int  id_version ;
 	 * @return id_fichier_version 
 	 */
 	public int getIdFichierVersion() {
-		return id_fichier_version;
+		return id_projet_java;
 	}
 
 	// setter de la classe VersionFichier
@@ -138,7 +138,7 @@ private int  id_version ;
 	 * @param id_fichier_v
 	 */
 	public void setIdFichierVersion(int id_fichier_v) {
-		this.id_fichier_version = id_fichier_v;
+		this.id_projet_java = id_fichier_v;
 
 	}
 	// méthode de la classe VersionFichier  :
@@ -149,7 +149,7 @@ private int  id_version ;
 	*/
 	public String toString() {
 	return "["+id_version+"]| version:["+numéro_maj+"."+numéro_min+"]| "
-			+ "contenu:"+contenu_version+"|description:"+contenu_description+"|projet:["+id_fichier_version+"]" ;
+			+ "contenu:"+contenu_version+"|description:"+contenu_description+"|projet:["+id_projet_java+"]" ;
 	
 	}
 }
