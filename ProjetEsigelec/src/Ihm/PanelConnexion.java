@@ -1,17 +1,21 @@
 package Ihm;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import DAO.DAOUtilisateur;
+import moteur.Utilisateur;
 
 public class PanelConnexion extends PanelGenerique implements ActionListener  {
 	
@@ -30,10 +34,10 @@ public class PanelConnexion extends PanelGenerique implements ActionListener  {
 			this.texteTitre.setFont(policeTaille2);
 			this.texteTitre.setHorizontalAlignment(this.texteTitre.CENTER);
 			
-			this.champLogin = new JTextField("Login");
+			this.champLogin = new JTextField("test1");
 			this.champLogin.setFont(policeTaille2);
 			
-			this.champPassword = new JTextField("Password");
+			this.champPassword = new JTextField("test1");
 			this.champPassword.setFont(policeTaille2);
 			
 			this.bouttonValider = new JButton("Valider");
@@ -60,7 +64,41 @@ public class PanelConnexion extends PanelGenerique implements ActionListener  {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			this.fen.setContentPane(new PanelMenu(this.fen));
-			this.fen.revalidate();
+			
+			
+			System.out.println("1");
+			
+			ArrayList<Utilisateur> listeUtilisateurs = this.fen.getDaoUtilisateur().getListeUtilisateurs();
+			
+			Boolean utilisateurTrouve = false;
+			
+			for(int i = 0; i < listeUtilisateurs.size(); i++) {
+				
+				if(this.champLogin.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
+					
+					System.out.println("Utilisateur trouvé !");
+					utilisateurTrouve = true;
+					
+					if(listeUtilisateurs.get(i).getMotDePasse().equals(this.champPassword.getText())) {
+						
+						System.out.println("Le mot de passe correspond ! Vous êtes authentifié ");
+						
+						this.fen.setUtilisateurActif(listeUtilisateurs.get(i));
+						this.fen.setContentPane(new PanelMenu(this.fen));
+						this.fen.revalidate(); //Obligation de passage en paramètre de la fenêtre pour revalider
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Mot de passe erroné");
+					}
+				}	
+				
+				System.out.println("dans la boucle");
+
+			}
+			
+			if(utilisateurTrouve == false)
+				JOptionPane.showMessageDialog(null, "Identifiant incorrect");
+
+			
 		}
 }

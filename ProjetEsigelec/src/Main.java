@@ -9,13 +9,12 @@ import moteur.Utilisateur;
 import moteur.VersionFichier;
 import moteur.ProjetJava;
 import java.sql.*;
+
+
 public class Main {
+	
 	 public static void main(String[] args) throws SQLException {
-		   DAOProjetJava DAOprojet = new DAOProjetJava(); 
-	 ArrayList<ProjetJava> liste_projet_utilisateur = DAOprojet.getListeProjetJavaUtilisateur(1);
-		     // affichage des projets 
-	  for (ProjetJava proj :liste_projet_utilisateur) { 
-		  System.out.println(proj.toString());
-	  }
-}
+		 
+		 Fenetre fen = new Fenetre();
+	 }
 }
