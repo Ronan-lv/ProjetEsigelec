@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Utilisateur {
 
 // déclarations des variables de la classe Utilisateur  :
-	private int reference  ;
+	private int reference ;
 	private String identifiant;
 	private String mot_de_passe;
 	private boolean isGestionnaire;

@@ -1,6 +1,5 @@
 package Ihm;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
@@ -10,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -18,7 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+
+import moteur.ProjetJava;
 
 public class PanelFichiersReferences extends PanelGenerique implements ActionListener {
 
@@ -38,6 +37,9 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 	private JButton boutonSupprimer;
 	private JButton boutonAfficherLesVersions;
 	
+	private ArrayList<JButton> listeDeBoutons = new ArrayList<JButton>();
+	
+	ArrayList<ProjetJava> listeProjetJava = this.fen.getDaoProjetJava().getListeProjetJavaUtilisateur(this.fen.getUtilisateurActif().getReference());
 
 	
 
@@ -81,8 +83,11 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 		this.titrePanel.setFont(this.policeTaille2);	
 		
 		this.boutonAfficher = new JButton("Afficher");
+		this.boutonAfficher.addActionListener(this);
 		this.boutonSupprimer = new JButton("Supprimer");
+		this.boutonSupprimer.addActionListener(this);
 		this.boutonAfficherLesVersions = new JButton("Afficher Versions");
+		this.boutonAfficherLesVersions.addActionListener(this);
 		
 	
 		//Ajouts des composants dans les panels
@@ -116,33 +121,37 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
     
     
     private void remplissageDuPanelMilieuAvecDesLignesGraphiques() {
+    	
  
-    	for(int i = 0; i < 100; i++) {
+    	for(int i = 0; i < listeProjetJava.size(); i++) {
     		
-    		JPanel uneLigneAffichage = new JPanel();    
+    		JButton uneLigneAffichage = new JButton();    
+    		
+    		uneLigneAffichage.addActionListener(this);
     		
     		uneLigneAffichage.setLayout(new BoxLayout(uneLigneAffichage, BoxLayout.LINE_AXIS));
     		uneLigneAffichage.setBorder(BorderFactory.createCompoundBorder(
     										BorderFactory.createLineBorder(Color.BLACK),
     										BorderFactory.createEmptyBorder(3, 3, 3, 3)
     									));
-    		
+    	
 
-    		uneLigneAffichage.add(new JLabel("date_fichier"));
+    		uneLigneAffichage.add(new JLabel(listeProjetJava.get(i).getDateProjet().toLocaleString()));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));
     		
-    		uneLigneAffichage.add(new JLabel("nom_fichier"));
+    		uneLigneAffichage.add(new JLabel(listeProjetJava.get(i).getNomProjet()));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));
     		
     		uneLigneAffichage.add(new JLabel("version_fichier"));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));
     		
     		uneLigneAffichage.add(new JLabel("ligne n° " + i));
-    		
-  
+
     		this.panelMilieu.add(uneLigneAffichage);
     		
     		this.panelMilieu.add(Box.createVerticalStrut(10));
+    		
+    		this.listeDeBoutons.add(uneLigneAffichage);
     	
     	}
     	
@@ -160,6 +169,30 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 		if(e.getSource() == this.boutonLogOut) {
 			this.fen.setContentPane(new PanelConnexion(this.fen));
 			this.fen.revalidate();
+		}
+		
+		for(int i = 0; i < this.panelMilieu.getComponents().length; i++) {
+
+			if(e.getSource() == this.panelMilieu.getComponents()[i]) {
+				
+				JButton btn = (JButton) this.panelMilieu.getComponents()[i];
+				JLabel label = (JLabel) btn.getComponent(2);
+				System.out.println(label.getText());
+				
+				for(int j = 0; j < this.listeProjetJava.size(); j ++) {
+					if(this.listeProjetJava.get(j).getNomProjet().equals(label.getText())) {
+						
+						System.out.println(this.listeProjetJava.get(j).getIdProjet());
+						this.fen.setStringDeTest( Integer.toString(this.listeProjetJava.get(j).getIdProjet()) );
+				
+					}
+					
+				}
+				
+				
+				this.fen.setContentPane(new PanelAfficherFichier(this.fen));
+				this.fen.revalidate();
+			}
 		}
 		
 	}
