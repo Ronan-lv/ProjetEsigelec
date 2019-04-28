@@ -4,9 +4,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Date;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -14,8 +20,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+
+import moteur.ProjetJava;
+import moteur.VersionFichier;
 
 public class PanelExplorateurDeFichiers extends PanelGenerique implements ActionListener{
 
@@ -47,6 +56,7 @@ public class PanelExplorateurDeFichiers extends PanelGenerique implements Action
 		this.titrePanel.setFont(this.policeTaille2);
 		
 		this.jfc = new JFileChooser();
+		this.jfc.addActionListener(this);
 	
 		
 		//Crï¿½ation & configuration des panels
@@ -104,7 +114,78 @@ public class PanelExplorateurDeFichiers extends PanelGenerique implements Action
 			this.fen.revalidate();
 		}
 		
+		if(e.getSource() == this.jfc) {
+			
+			ArrayList<ProjetJava> listeProjetJava = this.fen.getDaoProjetJava().getListeProjetJava();
+			
+			Boolean fichierDejaReference = false;
+			
+			for(int i = 0; i < listeProjetJava.size(); i++) {
+				if(listeProjetJava.get(i).getDestinationProjet().equals(this.jfc.getSelectedFile().getAbsolutePath())) {
+					
+					JOptionPane.showMessageDialog(null, "Le fichier à déja été référencé !");
+					fichierDejaReference = true;
+				}
+			}
+			
+			if(fichierDejaReference == false) {
+				
+				System.out.print("Le fichier va être référencé");
+				
+				
+				
+				
+				//ATTENTION => listeProjetJava.size() ne marche plus pour la création de l'id à partir du moment ou l'on supprime une ligne
+				
+				this.fen.getDaoProjetJava().ajouter(new ProjetJava(listeProjetJava.size() + 1,
+																	this.jfc.getSelectedFile().getName(),
+																	this.jfc.getSelectedFile().getAbsolutePath(),
+																	new Date(12, 12, 2012),
+																	this.fen.getUtilisateurActif().getReference()));
+				
+				this.fen.getDaoVersionFichier().ajouter(new VersionFichier(listeProjetJava.size() + 1,
+																	0,
+																	1,
+																	recupererContenuFichier(this.jfc.getSelectedFile()),
+																	"La première description",
+																	listeProjetJava.size() + 1));
+				System.out.print("Le fichier va a été référencé");
+
+				JOptionPane.showMessageDialog(null, "Le fichier a bien été référencé");
+			
+			
+			}
+			
+		}		
+		
+	}
+	
+	
+	private String recupererContenuFichier(File f) {
+		
+		String contenuFichier = "";
+		String ligne;
+		
+		try {
+			FileReader fileReader = new FileReader(f.getAbsolutePath());
+			BufferedReader reader = new BufferedReader(fileReader);
+			
+			while((ligne = reader.readLine()) != null) {
+				contenuFichier = contenuFichier + "\n" + ligne;
+			}
+						
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return contenuFichier;
 	}
 	
 
 }
+ 
