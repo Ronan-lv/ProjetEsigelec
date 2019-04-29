@@ -140,7 +140,7 @@ public class PanelExplorateurDeFichiers extends PanelGenerique implements Action
 				this.fen.getDaoProjetJava().ajouter(new ProjetJava(listeProjetJava.size() + 1,
 																	this.jfc.getSelectedFile().getName(),
 																	this.jfc.getSelectedFile().getAbsolutePath(),
-																	new Date(12, 12, 2012),
+																	new Date(System.currentTimeMillis()), //(modification de l'heure d'affichage en temps réel)
 																	this.fen.getUtilisateurActif().getReference()));
 				
 				this.fen.getDaoVersionFichier().ajouter(new VersionFichier(listeProjetJava.size() + 1,
