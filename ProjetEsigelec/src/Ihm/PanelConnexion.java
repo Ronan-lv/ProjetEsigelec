@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import DAO.DAOUtilisateur;
@@ -37,7 +38,7 @@ public class PanelConnexion extends PanelGenerique implements ActionListener  {
 			this.champLogin = new JTextField("test1");
 			this.champLogin.setFont(policeTaille2);
 			
-			this.champPassword = new JTextField("test1");
+			this.champPassword = new JPasswordField("test1");
 			this.champPassword.setFont(policeTaille2);
 			
 			this.bouttonValider = new JButton("Valider");
