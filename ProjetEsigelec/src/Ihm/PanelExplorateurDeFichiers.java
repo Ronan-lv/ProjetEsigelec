@@ -130,28 +130,34 @@ public class PanelExplorateurDeFichiers extends PanelGenerique implements Action
 			
 			if(fichierDejaReference == false) {
 				
-				System.out.print("Le fichier va être référencé");
+				String nomProjet = JOptionPane.showInputDialog(this, "Nom du projet :", "Référencer un nouveau projet", JOptionPane.NO_OPTION);
 				
-				
-				
-				
-				//ATTENTION => listeProjetJava.size() ne marche plus pour la création de l'id à partir du moment ou l'on supprime une ligne
-				
-				this.fen.getDaoProjetJava().ajouter(new ProjetJava(listeProjetJava.size() + 1,
-																	this.jfc.getSelectedFile().getName(),
-																	this.jfc.getSelectedFile().getAbsolutePath(),
-																	new Date(System.currentTimeMillis()), //(modification de l'heure d'affichage en temps réel)
-																	this.fen.getUtilisateurActif().getReference()));
-				
-				this.fen.getDaoVersionFichier().ajouter(new VersionFichier(listeProjetJava.size() + 1,
-																	0,
-																	1,
-																	recupererContenuFichier(this.jfc.getSelectedFile()),
-																	"La première description",
-																	listeProjetJava.size() + 1));
-				System.out.print("Le fichier va a été référencé");
+				if(nomProjet != null) {
+					
+					//ATTENTION => listeProjetJava.size() ne marche plus pour la création de l'id à partir du moment ou l'on supprime une ligne
+					
+					this.fen.getDaoProjetJava().ajouter(new ProjetJava(listeProjetJava.size() + 1,
+																		nomProjet,
+																		this.jfc.getSelectedFile().getAbsolutePath(),
+																		new Date(System.currentTimeMillis()), //(modification de l'heure d'affichage en temps réel)
+																		this.fen.getUtilisateurActif().getReference()));
+					
+					this.fen.getDaoVersionFichier().ajouter(new VersionFichier(listeProjetJava.size() + 1,
+																		0,
+																		1,
+																		recupererContenuFichier(this.jfc.getSelectedFile()),
+																		"La première description",
+																		listeProjetJava.size() + 1));
 
-				JOptionPane.showMessageDialog(null, "Le fichier a bien été référencé");
+					JOptionPane.showMessageDialog(null, "Le fichier a bien été référencé");
+					
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Fichier non référencé");
+
+				}
+				
+				
 			
 			
 			}
