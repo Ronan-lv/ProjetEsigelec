@@ -14,8 +14,10 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 
 import moteur.ProjetJava;
 
@@ -38,6 +40,7 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 	private JButton boutonAfficherLesVersions;
 	
 	private ArrayList<JButton> listeDeBoutons = new ArrayList<JButton>();
+	private int indexDernierBoutonSelectionne;
 	
 	ArrayList<ProjetJava> listeProjetJava = this.fen.getDaoProjetJava().getListeProjetJavaUtilisateur(this.fen.getUtilisateurActif().getReference());
 
@@ -47,6 +50,8 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
     public PanelFichiersReferences(Fenetre fen) {
     	
     	super(fen);
+    	
+    	this.indexDernierBoutonSelectionne = -1;
 		
 		
 		//Création & configuration des panels
@@ -177,23 +182,51 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 				
 				JButton btn = (JButton) this.panelMilieu.getComponents()[i];
 				JLabel label = (JLabel) btn.getComponent(2);
-				System.out.println(label.getText());
 				
 				for(int j = 0; j < this.listeProjetJava.size(); j ++) {
+					
 					if(this.listeProjetJava.get(j).getNomProjet().equals(label.getText())) {
+			
+						btn.setBorder(BorderFactory.createLineBorder(Color.black, 3));
 						
-						System.out.println(this.listeProjetJava.get(j).getIdProjet());
+						
+						if(this.indexDernierBoutonSelectionne != -1 && this.indexDernierBoutonSelectionne != j) {
+							
+							this.listeDeBoutons.get(this.indexDernierBoutonSelectionne).setBorder(BorderFactory.createLineBorder(Color.black, 1));;
+						}
+						
+						this.indexDernierBoutonSelectionne = j;
+						
 						this.fen.setStringDeTest( Integer.toString(this.listeProjetJava.get(j).getIdProjet()) );
 				
 					}
 					
 				}
 				
-				
-				this.fen.setContentPane(new PanelAfficherFichier(this.fen));
 				this.fen.revalidate();
 			}
+			
 		}
+		
+		if(e.getSource() == this.boutonAfficher) {
+			this.fen.setContentPane(new PanelAfficherFichier(this.fen));
+			this.fen.revalidate();
+		}
+		
+		if(e.getSource() == this.boutonSupprimer) {
+			
+			if(JOptionPane.showConfirmDialog(this, "Êtes-vous sûr de vouloir supprimer le projet ?", "Suppresion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
+			
+				//Commande pour supprimer le fichier selectionner
+				
+			}
+		}
+		
+		
+		
+		
+		
+		
 		
 	}
 	
