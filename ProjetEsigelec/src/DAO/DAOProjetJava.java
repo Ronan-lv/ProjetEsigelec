@@ -54,12 +54,11 @@ public class DAOProjetJava {
 			// les getters permettent de récupérer les valeurs des attributs
 			// souhaités
 			ps = con.prepareStatement(
-					"INSERT INTO fichier (id,nom,destination,date_fichier,id_fichier_uti) VALUES (?, ?, ?, ? ,?)");
-			ps.setInt(1, projet.getIdProjet());
-			ps.setString(2, projet.getNomProjet());
-			ps.setString(3, projet.getDestinationProjet());
-			ps.setDate(4, projet.getDateProjet());
-			ps.setInt(5, projet.getIdFichierUtilisateur());
+					"INSERT INTO fichier (nom,destination,date_fichier,id_fichier_uti) VALUES (?, ?, ? ,?)");
+			ps.setString(1, projet.getNomProjet());
+			ps.setString(2, projet.getDestinationProjet());
+			ps.setDate(3, projet.getDateProjet());
+			ps.setInt(4, projet.getIdFichierUtilisateur());
 			// Exécution de la requête
 			retour = ps.executeUpdate();
 		} catch (Exception e) {

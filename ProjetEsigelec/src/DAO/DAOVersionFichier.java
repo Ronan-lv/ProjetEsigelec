@@ -58,14 +58,12 @@ public class DAOVersionFichier {
 			// à communiquer dans l'insertion
 			// les getters permettent de récupérer les valeurs des attributs
 			// souhaités
-			ps = con.prepareStatement("INSERT INTO version (id,"
-					+ "num_maj,num_min,contenu,description,id_fichier_version) VALUES (?, ?, ?, ?, ?, ?)");
-			ps.setInt(1, version.getIdVersion());
-			ps.setInt(2, version.getNumeroMaj());
-			ps.setInt(3, version.getNumeroMin());
-			ps.setString(4, version.getContenuVersion());
-			ps.setString(5, version.getContenuDescription());
-			ps.setInt(6, version.getIdFichierVersion());
+			ps = con.prepareStatement("INSERT INTO version (num_maj,num_min,contenu,description,id_fichier_version) VALUES (?, ?, ?, ?, ?)");
+			ps.setInt(1, version.getNumeroMaj());
+			ps.setInt(2, version.getNumeroMin());
+			ps.setString(3, version.getContenuVersion());
+			ps.setString(4, version.getContenuDescription());
+			ps.setInt(5, version.getIdFichierVersion());
 			// Exécution de la requête
 			retour = ps.executeUpdate();
 		} catch (Exception e) {
