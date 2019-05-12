@@ -218,6 +218,46 @@ public class DAOProjetJava {
 			}
 			return retour;
 	}
+		
+		
+	public int recupererDernierProjetJavaAjoute() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int retour = 0;
+
+
+		try {
+			con = DriverManager.getConnection(URL, LOGIN, PASS);
+			ps = con.prepareStatement("SELECT MAX(id) FROM fichier");		
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				retour = rs.getInt("MAX(id)");
+			}
+		} catch (Exception ee) {
+			ee.printStackTrace();
+		} finally {
+			// fermeture du rs, du preparedStatement et de la connexion
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (con != null)
+					con.close();
+			} catch (Exception ignore) {
+			}
+		}
+		return retour;
+	}
+		
     //------------------------------------TEST DAO PROJETJAVA---------------------------------------------- 
 	/**
 	// main permettant de tester la classe 

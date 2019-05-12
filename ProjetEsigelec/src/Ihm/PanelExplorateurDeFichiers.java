@@ -136,18 +136,18 @@ public class PanelExplorateurDeFichiers extends PanelGenerique implements Action
 					
 					//ATTENTION => listeProjetJava.size() ne marche plus pour la création de l'id à partir du moment ou l'on supprime une ligne
 					
-					this.fen.getDaoProjetJava().ajouter(new ProjetJava(listeProjetJava.size() + 1,
+					this.fen.getDaoProjetJava().ajouter(new ProjetJava(0,
 																		nomProjet,
 																		this.jfc.getSelectedFile().getAbsolutePath(),
 																		new Date(System.currentTimeMillis()), //(modification de l'heure d'affichage en temps réel)
 																		this.fen.getUtilisateurActif().getReference()));
 					
-					this.fen.getDaoVersionFichier().ajouter(new VersionFichier(listeProjetJava.size() + 1,
+					this.fen.getDaoVersionFichier().ajouter(new VersionFichier(0,
 																		0,
 																		1,
 																		recupererContenuFichier(this.jfc.getSelectedFile()),
 																		"La première description",
-																		listeProjetJava.size() + 1));
+																		this.fen.getDaoProjetJava().recupererDernierProjetJavaAjoute()));
 
 					JOptionPane.showMessageDialog(null, "Le fichier a bien été référencé");
 					
