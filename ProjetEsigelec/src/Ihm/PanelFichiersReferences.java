@@ -216,9 +216,15 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 		if(e.getSource() == this.boutonSupprimer) {
 			
 			if(JOptionPane.showConfirmDialog(this, "Êtes-vous sûr de vouloir supprimer le projet ?", "Suppresion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
-			
-				//Commande pour supprimer le fichier selectionner
 				
+				this.fen.getDaoProjetJava().supprimerProjetJava(this.listeProjetJava.get(this.indexDernierBoutonSelectionne).getIdProjet());
+				
+				this.listeProjetJava.remove(this.indexDernierBoutonSelectionne);
+				
+				this.listeDeBoutons.remove(this.indexDernierBoutonSelectionne);
+				
+				this.fen.setContentPane(new PanelFichiersReferences(this.fen));
+				this.fen.revalidate();
 			}
 		}
 		
