@@ -187,7 +187,7 @@ public class DAOProjetJava {
 				con = DriverManager.getConnection(URL, LOGIN, PASS);
 				ps = con.prepareStatement("SELECT * "
 						+ "FROM fichier INNER JOIN utilisateur ON (utilisateur.id = id_fichier_uti)"
-						+ " WHERE utilisateur.id = ? ");
+						+ " WHERE utilisateur.id = ? ORDER BY date_fichier DESC");
 				ps.setInt(1, reference);
 				
 				// on exécute la requête
