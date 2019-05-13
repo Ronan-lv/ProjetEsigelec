@@ -66,13 +66,16 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 		this.boutonLogOut = new JButton("LogOut");
 		this.boutonLogOut.addActionListener(this);
 		
-		this.titrePanel = new JLabel("Nom fichier + numéro de version");
+		this.titrePanel = new JLabel(this.fen.getDaoProjetJava().getProjetJava(Integer.valueOf(this.fen.getStringDeTest())).getNomProjet()
+									+ "  v"
+									+ this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(Integer.valueOf(this.fen.getStringDeTest()))
+									);
 		this.titrePanel.setFont(policeTaille2);
 		this.titrePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.titrePanel.setFont(this.policeTaille2);	
 		
 		this.zoneAffichageCode = new JTextArea();
-		
+		 
 		this.remplissageZoneAffichageCode();
 		
 		this.boutonAfficherAutresVersions = new JButton("Versions antérieurs");

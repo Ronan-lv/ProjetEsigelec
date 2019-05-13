@@ -87,6 +87,8 @@ public class DAOProjetJava {
 	 *         référence
 	 */
 	public ProjetJava getProjetJava(int reference) {
+		
+		
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -94,19 +96,20 @@ public class DAOProjetJava {
 		// connexion à la base de données
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT *"
-					+ "FROM fichier INNER JOIN utilisateur ON (utilisateur.id = id_fichier_uti) "
-					+ "WHERE utilisateur.id = ?");
+			ps = con.prepareStatement("SELECT * FROM fichier WHERE id = ?");
 			ps.setInt(1, reference);
 			// on exécute la requête
 			// rs contient un pointeur situé jusute avant la première ligne
 			// retournée
 			rs = ps.executeQuery();
 			// passe à la première (et unique) ligne retournée
-			if (rs.next())
+			if (rs.next()) {
 				retour = new ProjetJava(rs.getInt("id"), rs.getString("nom"),
 						rs.getString("destination"), rs.getDate("date_fichier"),
 						rs.getInt("id_fichier_uti"));
+			}
+				
+			
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		} finally {
