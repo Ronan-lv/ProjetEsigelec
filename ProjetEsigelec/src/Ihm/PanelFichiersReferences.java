@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 		this.panelHaut.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		
 		this.panelMilieu = new JPanel();
-		this.panelMilieu.setLayout(new BoxLayout(this.panelMilieu, BoxLayout.PAGE_AXIS));
+		this.panelMilieu.setLayout(new GridLayout(0, 1, 10, 10));
 		this.panelMilieu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		this.jsp = new JScrollPane(this.panelMilieu, 
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -153,9 +154,7 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
     		uneLigneAffichage.add(new JLabel("ligne n° " + i));
 
     		this.panelMilieu.add(uneLigneAffichage);
-    		
-    		this.panelMilieu.add(Box.createVerticalStrut(10));
-    		
+    		    		
     		this.listeDeBoutons.add(uneLigneAffichage);
     	
     	}
