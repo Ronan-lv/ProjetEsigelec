@@ -88,6 +88,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		this.resultatRecherche.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.boutonAfficherHistorique = new JButton("Historique");
 		this.boutonAfficherHistorique.setFont(policeTaille2);
+		this.boutonAfficherHistorique.addActionListener(this);
 		this.boutonSupprimer = new JButton("Supprimer");
 		this.boutonSupprimer.setFont(policeTaille2);
 		this.boutonSupprimer.addActionListener(this);
@@ -184,9 +185,15 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				JOptionPane.showMessageDialog(null, " L'identifiant existe déjà ");
 			}
 			if (utilisateurtrouver == false) {
-				this.fen.getDaoUtilisateur()
-						.ajouter(new Utilisateur(this.champLogin.getText(), this.champPassword.getText(), false));
-				JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
+				if (this.champPassword.getPassword().length >= 3 ) {
+					this.fen.getDaoUtilisateur()
+					.ajouter(new Utilisateur(this.champLogin.getText(), this.champPassword.getText(), false));
+			JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
+				}
+				else {
+					JOptionPane.showMessageDialog(null, " mot de passe inférieur à 3 caractères ");
+				}
+
 			}
 		}
 
@@ -209,6 +216,28 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 			if (utilisateurtrouver == true) {
 				this.fen.getDaoUtilisateur().supprimer(this.champDeRecherche.getText());
 				JOptionPane.showMessageDialog(null, " L'utilisateur a été supprimé ");
+			}
+		}
+		if (e.getSource()== this.boutonAfficherHistorique) {
+			boolean utilisateurtrouver = false;
+
+			for (int i = 0; i < listeUtilisateurs.size(); i++) {
+
+				if (this.champDeRecherche.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
+
+					utilisateurtrouver = true;
+				} else {
+					utilisateurtrouver = false;
+				}
+
+			}
+			if (utilisateurtrouver == false) {
+				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");
+			}
+			if (utilisateurtrouver == true) {
+				this.fen.setStringDeTest(this.champDeRecherche.getText());
+				this.fen.setContentPane(new PanelHistorique(this.fen));
+				this.fen.revalidate();
 			}
 		}
 
