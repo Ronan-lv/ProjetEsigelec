@@ -8,14 +8,18 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import moteur.Utilisateur;
 
 public class PanelGestionDesComptes extends PanelGenerique implements ActionListener{
 	
@@ -69,6 +73,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		this.boutonAjouter = new JButton("Ajouter");
 		this.boutonAjouter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.boutonAjouter.setFont(policeTaille2);
+		this.boutonAjouter.addActionListener(this);
 		
 		this.titrePanelDroite = new JLabel("Trouver un utilisateur");
 		this.titrePanelDroite.setFont(policeTaille2);
@@ -168,6 +173,8 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		ArrayList<Utilisateur> listeUtilisateurs = this.fen.getDaoUtilisateur().getListeUtilisateurs();
+		
 		if(e.getSource() == this.boutonMenu) {
 			this.fen.setContentPane(new PanelMenu(this.fen));
 			this.fen.revalidate();
@@ -176,6 +183,28 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		if(e.getSource() == this.boutonLogOut) {
 			this.fen.setContentPane(new PanelConnexion(this.fen));
 			this.fen.revalidate();
+		}
+		if (e.getSource() == this.boutonAjouter) {
+		
+			boolean utilisateurtrouver = false ;
+			
+			for(int i = 0; i < listeUtilisateurs.size(); i++) {
+				
+                 if(this.champLogin.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
+					
+					utilisateurtrouver = true;
+                 }
+                 else {
+                	 utilisateurtrouver = false ;
+                 }
+			}
+			if (utilisateurtrouver == true) {
+				JOptionPane.showMessageDialog(null, " L'identifiant existe déjà ");
+			}
+			if (utilisateurtrouver == false) {
+			this.fen.getDaoUtilisateur().ajouter(new Utilisateur(this.champLogin.getText(), this.champPassword.getText(),false));
+           	 JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
+			}	
 		}
 		
 	}
