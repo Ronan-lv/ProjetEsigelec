@@ -88,8 +88,8 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		this.boutonAfficherHistorique = new JButton("Historique");
 		this.boutonAfficherHistorique.setFont(policeTaille2);
 		this.boutonSupprimer = new JButton("Supprimer");
-
 		this.boutonSupprimer.setFont(policeTaille2);
+		this.boutonSupprimer.addActionListener(this);
 		
 		
 		//Création & configuration des panels
@@ -206,6 +206,30 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
            	 JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
 			}	
 		}
+		
+		if (e.getSource()==this.boutonSupprimer) {
+			boolean utilisateurtrouver = false ;
+			
+			for(int i = 0; i < listeUtilisateurs.size(); i++) {
+				
+if(this.champDeRecherche.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
+					
+					utilisateurtrouver = true;
+                 }
+                 else {
+                	 utilisateurtrouver = false ;
+                 }
+			
+			}
+			if (utilisateurtrouver == false) {
+				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");
+			}
+			if (utilisateurtrouver == true) {
+				this.fen.getDaoUtilisateur().supprimer(this.champDeRecherche.getText());
+				JOptionPane.showMessageDialog(null, " L'utilisateur a été supprimé ");			
+			}
+		}
+		
 		
 	}
 	
