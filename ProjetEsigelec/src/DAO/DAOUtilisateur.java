@@ -86,7 +86,7 @@ public class DAOUtilisateur {
 	 * @return l'utilisateur trouvé; null si aucun utilisateur ne correspond à cette
 	 *         référence
 	 */
-	public Utilisateur getUtilisateur(int reference) {
+	public Utilisateur getUtilisateur(String reference) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -94,8 +94,8 @@ public class DAOUtilisateur {
 		// connexion à la base de données
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT * FROM utilisateur WHERE id = ?");
-			ps.setInt(1, reference);
+			ps = con.prepareStatement("SELECT * FROM utilisateur WHERE identifiant = ?");
+			ps.setString(1, reference);
 			// on exécute la requête
 			// rs contient un pointeur situé jusute avant la première ligne
 			// retournée
