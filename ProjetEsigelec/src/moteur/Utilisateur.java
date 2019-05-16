@@ -31,6 +31,13 @@ public class Utilisateur {
 		this.mot_de_passe = mdp;
 		this.isGestionnaire = g;
 	}
+	
+	// constructeur pour l'ajout d'un utilisateur
+	public Utilisateur(String id, String mdp, boolean g) {
+		this.identifiant = id;
+		this.mot_de_passe = mdp;
+		this.isGestionnaire = g;
+	}
 
 // les getters de Utilisateur :	
 	/**
