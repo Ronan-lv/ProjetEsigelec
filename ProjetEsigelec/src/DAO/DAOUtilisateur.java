@@ -206,6 +206,49 @@ public class DAOUtilisateur {
 		}
 		return retour;
 	}
+	/**
+	 * Permet de supprimer un utilisateur dans la table utilisateur
+	 * Le mode est auto-commit par défaut : chaque suppression est validée
+	 *
+	 * @param identfiant l'identifiant de l'utilisateur à ajouter
+	 * @return retourne le nombre de lignes supprimés dans la table
+	 */
+	public int supprimer(String identifiant) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		int retour = 0;
+		// connexion à la base de données
+
+		try {
+			// tentative de connexion
+			con = DriverManager.getConnection(URL, LOGIN, PASS);
+			// préparation de l'instruction SQL, chaque ? représente une valeur
+			// à communiquer dans l'insertion
+			// les getters permettent de récupérer les valeurs des attributs
+			// souhaités
+			ps = con.prepareStatement("DELETE FROM  utilisateur WHERE identifiant = ?");
+			ps.setString(1, identifiant);
+			// Exécution de la requête
+			retour = ps.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// fermeture du preparedStatement et de la connexion
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (con != null)
+					con.close();
+			} catch (Exception ignore) {
+			}
+		}
+		return retour;
+		
+	}
 
 //---------------------------------------------TEST DE LA DAO-------------------------------------------------	
 	/**
