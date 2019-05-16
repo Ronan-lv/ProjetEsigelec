@@ -54,11 +54,10 @@ public class DAOUtilisateur {
 			// à communiquer dans l'insertion
 			// les getters permettent de récupérer les valeurs des attributs
 			// souhaités
-			ps = con.prepareStatement("INSERT INTO utilisateur (id," + "identifiant,mdp,type) VALUES (?, ?, ?, ?)");
-			ps.setInt(1, uti.getReference());
-			ps.setString(2, uti.getIdentifiant());
-			ps.setString(3, uti.getMotDePasse());
-			ps.setInt(4, uti.getIsGestionnaire() ? 1 : 0);
+			ps = con.prepareStatement("INSERT INTO utilisateur (identifiant,mdp,type) VALUES (?, ?, ?)");
+			ps.setString(1, uti.getIdentifiant());
+			ps.setString(2, uti.getMotDePasse());
+			ps.setInt(3, uti.getIsGestionnaire() ? 1 : 0);
 			// Exécution de la requête
 			retour = ps.executeUpdate();
 
