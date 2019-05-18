@@ -217,7 +217,6 @@ public class DAOVersionFichier {
 				retour = new VersionFichier(rs.getInt("id"), rs.getInt("num_maj"), rs.getInt("num_min"),
 						rs.getString("contenu"), rs.getString("description"), rs.getInt("id_fichier_version"));
 				
-				System.out.println("Hey ici j'ai pas encore planté et " + retour.getContenuVersion());
 			}
 			else {
 				System.out.println("Le fichier non trouvé  !");
