@@ -24,7 +24,7 @@ public class VersionFichier {
 	 * @param majeur
 	 * @param contenu_v
 	 */
-	public VersionFichier(int id_v ,int mineur, int majeur, String contenu_v, String contenu_d , int id_projet_java) {
+	public VersionFichier(int id_v, int majeur,int mineur, String contenu_v, String contenu_d , int id_projet_java) {
 		this.id_version = id_v ;
 		this.numéro_min = mineur;
 		this.numéro_maj = majeur;

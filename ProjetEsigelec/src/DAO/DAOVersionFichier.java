@@ -145,7 +145,7 @@ public class DAOVersionFichier {
 		// connexion à la base de données
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT * FROM version WHERE id_version_fichier = ?");
+			ps = con.prepareStatement("SELECT * FROM version WHERE id_fichier_version= ?");
 			ps.setInt(1, idProjetJava);
 			// on exécute la requête
 			rs = ps.executeQuery();
