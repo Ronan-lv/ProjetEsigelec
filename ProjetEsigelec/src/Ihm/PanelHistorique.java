@@ -19,10 +19,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import moteur.ProjetJava;
+import moteur.VersionFichier;
 
 public class PanelHistorique extends PanelGenerique implements ActionListener {
 	
-	ArrayList<ProjetJava> listeProjetJava = this.fen.getDaoProjetJava().getListeProjetJavaUtilisateur(this.fen.getDaoUtilisateur().getUtilisateur(this.fen.getStringDeTest()).getReference());
+
+
 
 	
 	private JPanel panelHaut;
@@ -114,9 +116,22 @@ public class PanelHistorique extends PanelGenerique implements ActionListener {
 
 	private void remplissageZoneAffichageCode() {
 		this.zoneAffichageCode.setEditable(false);
+	 ArrayList<ProjetJava> listeProjetJava = this.fen.getDaoProjetJava().getListeProjetJavaUtilisateur(this.fen.getUtilisateurActif().getReference());
 		//Penser à afficher la description
+		this.zoneAffichageCode.append("\t VOICI L'HISTORIQUE DE L'UTILISATEUR :\n \n ");
 		for (int i = 0 ; i < listeProjetJava.size(); i++) {
-			this.zoneAffichageCode.setText("test1");
+			this.zoneAffichageCode.append("PROJET N°"+(i+1)+":\n") ;
+			this.zoneAffichageCode.append("-------------------------\n") ;
+			this.zoneAffichageCode.append("NOM:	"+listeProjetJava.get(i).getNomProjet()+"\n");
+			this.zoneAffichageCode.append("DESTINATION:	"+listeProjetJava.get(i).getDestinationProjet()+"\n");
+			this.zoneAffichageCode.append("DATE:	"+listeProjetJava.get(i).getDateProjet()+"\n\n");
+			
+			ArrayList<VersionFichier> listeVersionFichier = this.fen.getDaoVersionFichier().getListeVersion(listeProjetJava.get(i).getIdProjet());
+			System.out.println(listeProjetJava.get(i).getIdProjet());
+			for (int j = 0 ; j < listeVersionFichier.size() ; j++) {
+				this.zoneAffichageCode.append("VERSION N°:"+listeVersionFichier.get(j).getNumeroMaj()+"."+listeVersionFichier.get(j).getNumeroMin()+"\n");
+				this.zoneAffichageCode.append("DESCRIPTION:"+listeVersionFichier.get(j).getContenuDescription()+"\n\n");
+			}
 		}
 	}
 	
