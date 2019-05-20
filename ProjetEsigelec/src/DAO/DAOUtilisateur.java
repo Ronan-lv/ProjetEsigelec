@@ -29,14 +29,12 @@ public class DAOUtilisateur {
 			System.err.println("Impossible de charger le pilote de BDD, ne pas "
 					+ "oublier d'importer le fichier .jar dans le projet");
 		}
-		
-	
 
 	}
 
 	/**
-	 * Permet d'ajouter un utilisateur dans la table utilisateur
-	 * Le mode est auto-commit par défaut : chaque insertion est validée
+	 * Permet d'ajouter un utilisateur dans la table utilisateur Le mode est
+	 * auto-commit par défaut : chaque insertion est validée
 	 *
 	 * @param utilisateur l'utilisateur à ajouter
 	 * @return retourne le nombre de lignes ajoutées dans la table
@@ -206,9 +204,10 @@ public class DAOUtilisateur {
 		}
 		return retour;
 	}
+
 	/**
-	 * Permet de supprimer un utilisateur dans la table utilisateur
-	 * Le mode est auto-commit par défaut : chaque suppression est validée
+	 * Permet de supprimer un utilisateur dans la table utilisateur Le mode est
+	 * auto-commit par défaut : chaque suppression est validée
 	 *
 	 * @param identfiant l'identifiant de l'utilisateur à ajouter
 	 * @return retourne le nombre de lignes supprimés dans la table
@@ -247,7 +246,7 @@ public class DAOUtilisateur {
 			}
 		}
 		return retour;
-		
+
 	}
 
 //---------------------------------------------TEST DE LA DAO-------------------------------------------------	
