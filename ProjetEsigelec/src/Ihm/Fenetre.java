@@ -26,6 +26,7 @@ public class Fenetre extends JFrame{
 	
 	private Utilisateur UtilisateurActif;
 	
+	private int intDeTest;
 	private String stringDeTest;
 	
 
@@ -97,12 +98,21 @@ public class Fenetre extends JFrame{
 	
 	
 	//test
+	public int getIntDeTest() {
+		return intDeTest;
+	}
+	public void setIntDeTest(int intDeTest) {
+		this.intDeTest = intDeTest;
+	}
+
+
 	public String getStringDeTest() {
 		return stringDeTest;
 	}
 	public void setStringDeTest(String stringDeTest) {
 		this.stringDeTest = stringDeTest;
 	}
+	
 	
 	
 	//test
