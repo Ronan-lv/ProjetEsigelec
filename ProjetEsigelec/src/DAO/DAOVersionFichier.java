@@ -205,7 +205,7 @@ public class DAOVersionFichier {
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
 			System.out.println(idProjetJava);
-			ps = con.prepareStatement("SELECT * FROM version WHERE id_fichier_version = ?");
+			ps = con.prepareStatement("SELECT * FROM version WHERE id_fichier_version = ? ORDER BY num_maj DESC");
 			ps.setInt(1, idProjetJava);
 			// on exécute la requête
 			// rs contient un pointeur situé jusute avant la première ligne
@@ -217,7 +217,6 @@ public class DAOVersionFichier {
 				retour = new VersionFichier(rs.getInt("id"), rs.getInt("num_maj"), rs.getInt("num_min"),
 						rs.getString("contenu"), rs.getString("description"), rs.getInt("id_fichier_version"));
 				
-				System.out.println("Hey ici j'ai pas encore planté et " + retour.getContenuVersion());
 			}
 			else {
 				System.out.println("Le fichier non trouvé  !");
