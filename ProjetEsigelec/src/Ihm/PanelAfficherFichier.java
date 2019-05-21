@@ -7,15 +7,22 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import moteur.VersionFichier;
 
 public class PanelAfficherFichier extends PanelGenerique implements ActionListener{
 
@@ -32,8 +39,11 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 	private JScrollPane jsp;
 	
 	private JButton boutonAfficherAutresVersions;
-	private JButton boutonSpecial;
+	private JButton boutonUpdateVersion;
 	private JButton boutonRetour;
+	
+	//Cette variable permet de ne lire qu'une seule fois le fichier
+	private String contenuVersionChargeViaLectureFichier;
 	
 	public PanelAfficherFichier(Fenetre fen) {
 		super(fen);
@@ -66,9 +76,9 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 		this.boutonLogOut = new JButton("LogOut");
 		this.boutonLogOut.addActionListener(this);
 		
-		this.titrePanel = new JLabel(this.fen.getDaoProjetJava().getProjetJava(Integer.valueOf(this.fen.getStringDeTest())).getNomProjet()
+		this.titrePanel = new JLabel(this.fen.getDaoProjetJava().getProjetJava(this.fen.getIntDeTest()).getNomProjet()
 									+ "  v"
-									+ this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(Integer.valueOf(this.fen.getStringDeTest()))
+									+ this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest())
 									);
 		this.titrePanel.setFont(policeTaille2);
 		this.titrePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -80,8 +90,13 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 		
 		this.boutonAfficherAutresVersions = new JButton("Versions antérieurs");
 		this.boutonAfficherAutresVersions.addActionListener(this);
-		this.boutonSpecial = new JButton("Bouton Spécial");
-		this.boutonSpecial.addActionListener(this);
+		this.boutonUpdateVersion = new JButton("Update Version");
+		this.boutonUpdateVersion.addActionListener(this);
+		
+		if(verifierSiVersionEstAJour() == true) {
+			this.boutonUpdateVersion.setEnabled(false);
+		}
+		
 		this.boutonRetour = new JButton("Retour");
 		this.boutonRetour.addActionListener(this);
 		
@@ -96,7 +111,7 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 		this.panelMilieu.add(zoneAffichageCode);
 		
 		this.panelBas.add(this.boutonAfficherAutresVersions);
-		this.panelBas.add(this.boutonSpecial);
+		this.panelBas.add(this.boutonUpdateVersion);
 		this.panelBas.add(this.boutonRetour);
 		
 		//Configuration du panel général
@@ -112,6 +127,8 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 		this.add(Box.createRigidArea(new Dimension(0, 30)));
 		this.add(this.panelBas);
 		this.add(Box.createRigidArea(new Dimension(0, 70)));
+		
+		verifierSiVersionEstAJour();
 	
 	
 	}
@@ -120,11 +137,52 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 		this.zoneAffichageCode.setEditable(false);
 		//Penser à afficher la description
 		this.zoneAffichageCode.setText(this.fen.getDaoVersionFichier().getDerniereVersionFichierDuProjet(
-				Integer.parseInt(this.fen.getStringDeTest()) ).getContenuVersion());
+				this.fen.getIntDeTest()).getContenuVersion());
 	}
 	
 	
-	
+	private Boolean verifierSiVersionEstAJour() {
+		
+		String contenuFichier = "";
+		String ligne;
+		
+		System.out.println("Coucou" + this.fen.getIntDeTest());
+		
+		try {
+			
+			FileReader fileReader = new FileReader(this.fen.getDaoProjetJava().getProjetJava(this.fen.getIntDeTest()).getDestinationProjet());
+
+			BufferedReader reader = new BufferedReader(fileReader);
+			
+			while((ligne = reader.readLine()) != null) {
+				contenuFichier = contenuFichier + "\n" + ligne;
+			}
+			
+			this.contenuVersionChargeViaLectureFichier = contenuFichier;
+						
+			System.out.println(this.contenuVersionChargeViaLectureFichier);
+
+
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		if(!contenuFichier.equals(this.fen.getDaoVersionFichier().getDerniereVersionFichierDuProjet(this.fen.getIntDeTest() ).getContenuVersion()))
+		{
+			System.out.println("Il faut mettre le fichier à jour");
+			return false;
+		}
+		else {
+			System.out.println("Le fichier est à jour");
+			return true;
+		}
+		
+	}
 	
 	
 	
@@ -144,6 +202,35 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 		}
 		
 		
+		if(e.getSource() == this.boutonUpdateVersion) {
+			
+			String descriptionNouvelleVersion;
+			
+			descriptionNouvelleVersion = JOptionPane.showInputDialog(this.fen,
+										"Description de cette nouvelle version", 
+										"Version " + this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1, 
+										JOptionPane.QUESTION_MESSAGE);
+			
+			if(descriptionNouvelleVersion != null) {
+								
+				this.fen.getDaoVersionFichier().ajouter(new VersionFichier(0, 
+						0,
+						this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1, 
+						this.contenuVersionChargeViaLectureFichier, 
+						descriptionNouvelleVersion, 
+						this.fen.getIntDeTest()));
+			}
+			
+			this.fen.setContentPane(new PanelAfficherFichier(this.fen));
+			this.fen.revalidate();
+			
+			JOptionPane.showMessageDialog(this.fen, 
+					"Vos modifications ont bien été enregistrés et le fichier est à jour",
+					"Update réussit", 
+					JOptionPane.INFORMATION_MESSAGE);
+			
+		}
+		
 		if(e.getSource() == this.boutonRetour) {
 			this.fen.setContentPane(new PanelFichiersReferences(this.fen));
 			this.fen.revalidate();
@@ -151,3 +238,4 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 	}
 
 }
+ 
