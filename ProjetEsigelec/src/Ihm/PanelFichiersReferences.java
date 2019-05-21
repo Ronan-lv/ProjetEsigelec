@@ -196,8 +196,7 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 						
 						this.indexDernierBoutonSelectionne = j;
 						
-						this.fen.setStringDeTest( Integer.toString(this.listeProjetJava.get(j).getIdProjet()) );
-				
+						this.fen.setIntDeTest(this.listeProjetJava.get(j).getIdProjet());
 					}
 					
 				}
