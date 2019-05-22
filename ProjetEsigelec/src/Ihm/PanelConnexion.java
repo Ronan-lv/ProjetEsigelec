@@ -22,7 +22,7 @@ public class PanelConnexion extends PanelGenerique implements ActionListener  {
 	
 		private JLabel texteTitre;
 		private JTextField champLogin;
-		private JTextField champPassword;
+		private JPasswordField champPassword;
 		
 		private JButton bouttonValider;
 		
@@ -80,7 +80,7 @@ public class PanelConnexion extends PanelGenerique implements ActionListener  {
 					System.out.println("Utilisateur trouvé !");
 					utilisateurTrouve = true;
 					
-					if(listeUtilisateurs.get(i).getMotDePasse().equals(this.champPassword.getText())) {
+					if(listeUtilisateurs.get(i).getMotDePasse().equals(new String (this.champPassword.getPassword()))) {
 						
 						System.out.println("Le mot de passe correspond ! Vous êtes authentifié ");
 						
