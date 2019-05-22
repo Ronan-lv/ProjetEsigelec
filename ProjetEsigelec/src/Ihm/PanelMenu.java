@@ -51,11 +51,23 @@ public class PanelMenu extends PanelGenerique implements ActionListener{
 		this.panelBas.setLayout(new GridLayout(0, 3, 10, 0));
 		this.panelBas.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
 
+	
+		if (this.fen.getUtilisateurActif().getIsGestionnaire()==true) {
+			this.panelBas.setLayout(new GridLayout(0, 3, 10, 0));
+			this.panelBas.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
+			this.panelHaut.add(this.boutonLogOut, BorderLayout.EAST);
+			this.panelBas.add(this.boutonDocumentsReferences);
+			this.panelBas.add(this.boutonExplorateurDeFichier);
+			this.panelBas.add(this.boutonGestionUtilisateur);
+		}		
+		if (this.fen.getUtilisateurActif().getIsGestionnaire()==false) {
+			this.panelBas.setLayout(new GridLayout(2, 0, 10, 0));
+			this.panelBas.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
+			this.panelHaut.add(this.boutonLogOut, BorderLayout.EAST);
+			this.panelBas.add(this.boutonDocumentsReferences);
+			this.panelBas.add(this.boutonExplorateurDeFichier);
+		}
 		
-		this.panelHaut.add(this.boutonLogOut, BorderLayout.EAST);
-		this.panelBas.add(this.boutonDocumentsReferences);
-		this.panelBas.add(this.boutonExplorateurDeFichier);
-		this.panelBas.add(this.boutonGestionUtilisateur);
 		
 		this.setLayout(new GridLayout(6, 0));
 		this.add(this.panelHaut);
