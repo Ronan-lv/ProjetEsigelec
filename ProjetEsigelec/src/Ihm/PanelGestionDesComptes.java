@@ -41,8 +41,6 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 
 	private JLabel titrePanelDroite;
 	private JTextArea champDeRecherche;
-	private JButton boutonValider;
-	private JLabel resultatRecherche;
 	private JButton boutonAfficherHistorique;
 	private JButton boutonSupprimer;
 
@@ -69,7 +67,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		this.titrePanelGauche.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.champLogin = new JTextArea("Login");
 		this.champLogin.setFont(policeTaille2);
-		this.champPassword = new JPasswordField("Password");
+		this.champPassword = new JPasswordField("");
 		this.champPassword.setFont(policeTaille2);
 		this.boutonAjouter = new JButton("Ajouter");
 		this.boutonAjouter.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -81,11 +79,6 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		this.titrePanelDroite.setHorizontalAlignment(JLabel.CENTER);
 		this.champDeRecherche = new JTextArea("Nom d'utilisateur");
 		this.champDeRecherche.setFont(policeTaille2);
-		this.boutonValider = new JButton("Valider");
-		this.boutonValider.setFont(policeTaille2);
-		this.resultatRecherche = new JLabel("");
-		this.resultatRecherche.setFont(policeTaille2);
-		this.resultatRecherche.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.boutonAfficherHistorique = new JButton("Historique");
 		this.boutonAfficherHistorique.setFont(policeTaille2);
 		this.boutonAfficherHistorique.addActionListener(this);
@@ -132,8 +125,6 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 
 		this.panelDroite.add(this.titrePanelDroite);
 		this.panelDroite.add(this.champDeRecherche);
-		this.panelDroite.add(this.boutonValider);
-		this.panelDroite.add(this.resultatRecherche);
 		this.panelDroite.add(this.boutonAfficherHistorique);
 		this.panelDroite.add(this.boutonSupprimer);
 
@@ -185,13 +176,13 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				JOptionPane.showMessageDialog(null, " L'identifiant existe déjà ");
 			}
 			if (utilisateurtrouver == false) {
-				if (this.champPassword.getPassword().length >= 3 ) {
+				if (this.champPassword.getPassword().length >= 3 && this.champLogin.getText() != "login" ) {
 					this.fen.getDaoUtilisateur()
 					.ajouter(new Utilisateur(this.champLogin.getText(), this.champPassword.getText(), false));
 			JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
 				}
 				else {
-					JOptionPane.showMessageDialog(null, " mot de passe inférieur à 3 caractères ");
+					JOptionPane.showMessageDialog(null, " mot de passe inférieur à 3 caractères , ou identifiant incorrect ");
 				}
 
 			}
@@ -205,10 +196,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				if (this.champDeRecherche.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
 
 					utilisateurtrouver = true;
-				} else {
-					utilisateurtrouver = false;
-				}
-
+				} 
 			}
 			if (utilisateurtrouver == false) {
 				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");
@@ -226,10 +214,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				if (this.champDeRecherche.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
 
 					utilisateurtrouver = true;
-				} else {
-					utilisateurtrouver = false;
-				}
-
+				} 
 			}
 			if (utilisateurtrouver == false) {
 				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");

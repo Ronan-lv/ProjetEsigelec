@@ -73,7 +73,7 @@ public class PanelHistorique extends PanelGenerique implements ActionListener {
 		this.boutonLogOut = new JButton("LogOut");
 		this.boutonLogOut.addActionListener(this);
 		
-		this.titrePanel = new JLabel(this.fen.getDaoUtilisateur().getUtilisateur(this.fen.getStringDeTest()).getIdentifiant());
+		this.titrePanel = new JLabel("Utilisateur:"+this.fen.getDaoUtilisateur().getUtilisateur(this.fen.getStringDeTest()).getIdentifiant());
 		this.titrePanel.setFont(policeTaille2);
 		this.titrePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.titrePanel.setFont(this.policeTaille2);	
@@ -116,9 +116,10 @@ public class PanelHistorique extends PanelGenerique implements ActionListener {
 
 	private void remplissageZoneAffichageCode() {
 		this.zoneAffichageCode.setEditable(false);
-	 ArrayList<ProjetJava> listeProjetJava = this.fen.getDaoProjetJava().getListeProjetJavaUtilisateur(this.fen.getUtilisateurActif().getReference());
+	 ArrayList<ProjetJava> listeProjetJava = this.fen.getDaoProjetJava().getListeProjetJavaUtilisateurHistorique(this.fen.getStringDeTest());
 		//Penser à afficher la description
-		this.zoneAffichageCode.append("\t VOICI L'HISTORIQUE DE L'UTILISATEUR :\n \n ");
+		this.zoneAffichageCode.append("\t\t VOICI L'HISTORIQUE DE L'UTILISATEUR :\n");
+		this.zoneAffichageCode.append("\t\t ----------------------------------------------------------\n");
 		for (int i = 0 ; i < listeProjetJava.size(); i++) {
 			this.zoneAffichageCode.append("PROJET N°"+(i+1)+":\n") ;
 			this.zoneAffichageCode.append("-------------------------\n") ;
@@ -129,7 +130,7 @@ public class PanelHistorique extends PanelGenerique implements ActionListener {
 			ArrayList<VersionFichier> listeVersionFichier = this.fen.getDaoVersionFichier().getListeVersion(listeProjetJava.get(i).getIdProjet());
 			System.out.println(listeProjetJava.get(i).getIdProjet());
 			for (int j = 0 ; j < listeVersionFichier.size() ; j++) {
-				this.zoneAffichageCode.append("VERSION N°:"+listeVersionFichier.get(j).getNumeroMaj()+"."+listeVersionFichier.get(j).getNumeroMin()+"\n");
+				this.zoneAffichageCode.append("(VERSION N°:"+listeVersionFichier.get(j).getNumeroMaj()+"."+listeVersionFichier.get(j).getNumeroMin()+"):\n");
 				this.zoneAffichageCode.append("DESCRIPTION:"+listeVersionFichier.get(j).getContenuDescription()+"\n\n");
 			}
 		}
