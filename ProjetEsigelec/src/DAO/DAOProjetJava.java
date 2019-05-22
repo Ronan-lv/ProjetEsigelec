@@ -221,7 +221,47 @@ public class DAOProjetJava {
 			}
 			return retour;
 	}
-		
+		public ArrayList<ProjetJava> getListeProjetJavaUtilisateurHistorique( String reference) {
+			Connection con = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			ArrayList<ProjetJava> retour = new ArrayList<ProjetJava>();
+			// connexion à la base de données
+			try {
+				con = DriverManager.getConnection(URL, LOGIN, PASS);
+				ps = con.prepareStatement("SELECT * "
+						+ "FROM fichier INNER JOIN utilisateur ON (utilisateur.id = id_fichier_uti)"
+						+ " WHERE utilisateur.identifiant = ? ORDER BY date_fichier DESC");
+				ps.setString(1, reference);
+				
+				// on exécute la requête
+				rs = ps.executeQuery();
+				// on parcourt les lignes du résultat
+				while (rs.next())
+					retour.add(new ProjetJava(rs.getInt("id"), rs.getString("nom"),
+							rs.getString("destination"), rs.getDate("date_fichier") , rs.getInt("id_fichier_uti")));
+			} catch (Exception ee) {
+				ee.printStackTrace();
+			} finally {
+				// fermeture du rs, du preparedStatement et de la connexion
+				try {
+					if (rs != null)
+						rs.close();
+				} catch (Exception ignore) {
+				}
+				try {
+					if (ps != null)
+						ps.close();
+				} catch (Exception ignore) {
+				}
+				try {
+					if (con != null)
+						con.close();
+				} catch (Exception ignore) {
+				}
+			}
+			return retour;
+	}
 		
 	public int recupererDernierProjetJavaAjoute() {
 		Connection con = null;
