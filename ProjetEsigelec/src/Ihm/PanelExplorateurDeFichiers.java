@@ -143,8 +143,8 @@ public class PanelExplorateurDeFichiers extends PanelGenerique implements Action
 																		this.fen.getUtilisateurActif().getReference()));
 					
 					this.fen.getDaoVersionFichier().ajouter(new VersionFichier(0,
-																		0,
 																		1,
+																		0,
 																		recupererContenuFichier(this.jfc.getSelectedFile()),
 																		"La première description",
 																		this.fen.getDaoProjetJava().recupererDernierProjetJavaAjoute()));
