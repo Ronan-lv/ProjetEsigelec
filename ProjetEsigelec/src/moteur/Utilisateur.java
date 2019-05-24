@@ -17,7 +17,6 @@ public class Utilisateur {
 	
 	
 	private ArrayList<ProjetJava> listeprojet;
-	private Historique historique_utilisateur;
 
 	// le constructeur de Utilisateur
 	/**
@@ -71,13 +70,7 @@ public class Utilisateur {
 	public boolean getIsGestionnaire() {
 		return isGestionnaire;
 	}
-	/**
-	 * getter pour récupérer l'historique d'un utilisateur 
-	 * @return historique_utilisateur
-	 */
-    public Historique getHistoriqueUtilisateur () {
-    	return historique_utilisateur ;
-    }
+
     /**
      * getter pour récupérer la liste des projet d'un utilisateur 
      * @return listeprojet
