@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author Gael Leroux et Ronan Le Viennesse version : La classe utilisateur du
+ * @author Gael Leroux et Ronan Le Viennesse , La classe utilisateur du
  *         logiciel
  */
 public class Utilisateur {

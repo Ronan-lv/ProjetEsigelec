@@ -22,6 +22,13 @@ import javax.swing.JTextArea;
 
 import moteur.Utilisateur;
 
+/**
+ * Classe PanelGestionDesComptes , permet l'affichage pour gérer les comptes du
+ * logiciel
+ * 
+ * @author Le Roux Gael , Le Viennesse Ronan
+ *
+ */
 public class PanelGestionDesComptes extends PanelGenerique implements ActionListener {
 
 	private JPanel panelHaut;
@@ -44,6 +51,11 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 	private JButton boutonAfficherHistorique;
 	private JButton boutonSupprimer;
 
+	/**
+	 * Constructeur de la classe PanelGestionDesComptes
+	 * 
+	 * @param fen
+	 */
 	public PanelGestionDesComptes(Fenetre fen) {
 
 		super(fen);
@@ -145,6 +157,12 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 
 	}
 
+	/**
+	 * Méthode qui permet de gérer les évenement d'un utilisateur sur le
+	 * PanelGestionDesComptes , souris ,clavier ...
+	 * 
+	 * @param e , la source d'un evenement
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -176,13 +194,13 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				JOptionPane.showMessageDialog(null, " L'identifiant existe déjà ");
 			}
 			if (utilisateurtrouver == false) {
-				if (this.champPassword.getPassword().length >= 3 && this.champLogin.getText() != "login" ) {
+				if (this.champPassword.getPassword().length >= 3 && this.champLogin.getText() != "login") {
 					this.fen.getDaoUtilisateur()
-					.ajouter(new Utilisateur(this.champLogin.getText(), this.champPassword.getText(), false));
-			JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
-				}
-				else {
-					JOptionPane.showMessageDialog(null, " mot de passe inférieur à 3 caractères , ou identifiant incorrect ");
+							.ajouter(new Utilisateur(this.champLogin.getText(), this.champPassword.getText(), false));
+					JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
+				} else {
+					JOptionPane.showMessageDialog(null,
+							" mot de passe inférieur à 3 caractères , ou identifiant incorrect ");
 				}
 
 			}
@@ -196,7 +214,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				if (this.champDeRecherche.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
 
 					utilisateurtrouver = true;
-				} 
+				}
 			}
 			if (utilisateurtrouver == false) {
 				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");
@@ -206,7 +224,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				JOptionPane.showMessageDialog(null, " L'utilisateur a été supprimé ");
 			}
 		}
-		if (e.getSource()== this.boutonAfficherHistorique) {
+		if (e.getSource() == this.boutonAfficherHistorique) {
 			boolean utilisateurtrouver = false;
 
 			for (int i = 0; i < listeUtilisateurs.size(); i++) {
@@ -214,7 +232,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				if (this.champDeRecherche.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
 
 					utilisateurtrouver = true;
-				} 
+				}
 			}
 			if (utilisateurtrouver == false) {
 				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");
