@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import moteur.VersionFichier;
 
 /**
- * Classe DAO VersionFichier ,permet de faire le lien avec la table version
+ * Classe DAO VersionFichier ,permet de faire le lien avec la table Version
  * (BDD)
  * 
- * @author Gael Le Roux et Ronan Le Viennesse version :
+ * @author Gael Le Roux et Ronan Le Viennesse version
  */
 public class DAOVersionFichier {
 	/**
@@ -58,7 +58,8 @@ public class DAOVersionFichier {
 			// à communiquer dans l'insertion
 			// les getters permettent de récupérer les valeurs des attributs
 			// souhaités
-			ps = con.prepareStatement("INSERT INTO version (num_maj,num_min,contenu,description,id_fichier_version) VALUES (?, ?, ?, ?, ?)");
+			ps = con.prepareStatement(
+					"INSERT INTO version (num_maj,num_min,contenu,description,id_fichier_version) VALUES (?, ?, ?, ?, ?)");
 			ps.setInt(1, version.getNumeroMaj());
 			ps.setInt(2, version.getNumeroMin());
 			ps.setString(3, version.getContenuVersion());
@@ -134,7 +135,8 @@ public class DAOVersionFichier {
 
 	/**
 	 * Permet de récupérer tous les versions stockés dans la table version
-	 *
+	 * 
+	 * @param idProjetJava l'id du projet
 	 * @return une ArrayList de version
 	 */
 	public ArrayList<VersionFichier> getListeVersion(int idProjetJava) {
@@ -175,32 +177,20 @@ public class DAOVersionFichier {
 		}
 		return retour;
 	}
-	// -----------------------------------------TEST DE LA DAO VERSIONFICHIER
-	// ---------------------------------------
 
 	/**
-	 * // main permettant de tester la classe public static void main(String[] args)
-	 * throws SQLException { DAOVersionFichier DAOversion = new DAOVersionFichier();
-	 * // test de la méthode ajouter VersionFichier v1 = new
-	 * VersionFichier(1,1,0,"contenu1","description1" , 1);
+	 * Méthode qui permet de récupérer la dernière version d'un Projet selon son id
 	 * 
-	 * int retour = DAOversion.ajouter(v1); System.out.println(retour + " lignes
-	 * ajoutées"); // test de la méthode getArticle VersionFichier v2 =
-	 * DAOversion.getVersionFichier(1); System.out.println(v2); // test de la
-	 * méthode getListeArticles ArrayList<VersionFichier> liste =
-	 * DAOversion.getListeVersion(); // affichage des articles for (VersionFichier v
-	 * : liste) { System.out.println(v.toString()); } }
+	 * @param idProjetJava , l'id du projet
+	 * @return VersionFichier la dernière version du projet
 	 */
-
-
 	public VersionFichier getDerniereVersionFichierDuProjet(int idProjetJava) {
-		
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		VersionFichier retour = null;
 
-		
 		// connexion à la base de données
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
@@ -211,21 +201,18 @@ public class DAOVersionFichier {
 			// rs contient un pointeur situé jusute avant la première ligne
 			// retournée
 			rs = ps.executeQuery();
-			
+
 			// passe à la première (et unique) ligne retournée
 			if (rs.next()) {
 				retour = new VersionFichier(rs.getInt("id"), rs.getInt("num_maj"), rs.getInt("num_min"),
 						rs.getString("contenu"), rs.getString("description"), rs.getInt("id_fichier_version"));
-				
-			}
-			else {
+
+			} else {
 				System.out.println("Le fichier non trouvé  !");
-				//Permet d'éviter le plantage en cas d'erreur
+				// Permet d'éviter le plantage en cas d'erreur
 				retour = new VersionFichier(0, 0, 0, "Le fichier n'existe pas", "erreur du fichier", 0);
 			}
-				
 
-			
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		} finally {
@@ -249,22 +236,21 @@ public class DAOVersionFichier {
 		return retour;
 	}
 
+	// -----------------------------------------TEST DE LA DAO VERSIONFICHIER
+	// ---------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	/**
+	 * // main permettant de tester la classe public static void main(String[] args)
+	 * throws SQLException { DAOVersionFichier DAOversion = new DAOVersionFichier();
+	 * // test de la méthode ajouter VersionFichier v1 = new
+	 * VersionFichier(1,1,0,"contenu1","description1" , 1);
+	 * 
+	 * int retour = DAOversion.ajouter(v1); System.out.println(retour + " lignes
+	 * ajoutées"); // test de la méthode getArticle VersionFichier v2 =
+	 * DAOversion.getVersionFichier(1); System.out.println(v2); // test de la
+	 * méthode getListeArticles ArrayList<VersionFichier> liste =
+	 * DAOversion.getListeVersion(); // affichage des articles for (VersionFichier v
+	 * : liste) { System.out.println(v.toString()); } }
+	 */
 
 }
