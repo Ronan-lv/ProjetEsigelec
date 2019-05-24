@@ -214,8 +214,7 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 			if(descriptionNouvelleVersion != null) {
 								
 				this.fen.getDaoVersionFichier().ajouter(new VersionFichier(0, 
-						0,
-						this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1, 
+						this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1,0, 
 						this.contenuVersionChargeViaLectureFichier, 
 						descriptionNouvelleVersion, 
 						this.fen.getIntDeTest()));
