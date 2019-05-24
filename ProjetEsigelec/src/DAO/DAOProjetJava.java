@@ -376,6 +376,46 @@ public class DAOProjetJava {
 		
 		return retour;
 	}
+	
+	public int recupererMineurVersionProjetJava(int idProjetJava) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int retour = 0;
+
+		try {
+			con = DriverManager.getConnection(URL, LOGIN, PASS);
+			ps = con.prepareStatement("SELECT num_min FROM version WHERE id_fichier_version = ?");
+			ps.setInt(1, idProjetJava);
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				retour = rs.getInt("num_min");
+			}
+
+		} catch (Exception ee) {
+			ee.printStackTrace();
+		} finally {
+			// fermeture du rs, du preparedStatement et de la connexion
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (con != null)
+					con.close();
+			} catch (Exception ignore) {
+			}
+		}
+		
+		return retour;
+	}
 		
     //------------------------------------TEST DAO PROJETJAVA---------------------------------------------- 
 	/**
