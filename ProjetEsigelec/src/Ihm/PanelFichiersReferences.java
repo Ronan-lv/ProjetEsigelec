@@ -148,10 +148,11 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
     		uneLigneAffichage.add(new JLabel(listeProjetJava.get(i).getNomProjet()));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));
     		
-    		uneLigneAffichage.add(new JLabel(Integer.toString(this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(listeProjetJava.get(i).getIdProjet()))));
+    		uneLigneAffichage.add(new JLabel(Integer.toString(this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(listeProjetJava.get(i).getIdProjet()))+"."
+    		+Integer.toString(this.fen.getDaoProjetJava().recupererMineurVersionProjetJava(listeProjetJava.get(i).getIdProjet()))));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));
     		
-    		uneLigneAffichage.add(new JLabel("ligne n° " + i));
+    			uneLigneAffichage.add(new JLabel("ligne n° " + (i+1)));
 
     		this.panelMilieu.add(uneLigneAffichage);
     		    		
