@@ -220,8 +220,11 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");
 			}
 			if (utilisateurtrouver == true) {
+				if (JOptionPane.showConfirmDialog(this, "Êtes-vous sûr de vouloir supprimer l'utilisateur ?", "Suppresion",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
 				this.fen.getDaoUtilisateur().supprimer(this.champDeRecherche.getText());
 				JOptionPane.showMessageDialog(null, " L'utilisateur a été supprimé ");
+				}
 			}
 		}
 		if (e.getSource() == this.boutonAfficherHistorique) {
