@@ -84,7 +84,8 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 		this.boutonLogOut.addActionListener(this);
 
 		this.titrePanel = new JLabel(this.fen.getDaoProjetJava().getProjetJava(this.fen.getIntDeTest()).getNomProjet()
-				+ "  v" + this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()));
+				+ "  v" + this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest())+"."
+				+this.fen.getDaoProjetJava().recupererMineurVersionProjetJava(this.fen.getIntDeTest()));
 		this.titrePanel.setFont(policeTaille2);
 		this.titrePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.titrePanel.setFont(this.policeTaille2);
