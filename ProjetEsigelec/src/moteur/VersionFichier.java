@@ -3,46 +3,45 @@ package moteur;
 /**
  * la classe VersionFichier
  * 
- * @author Le Roux Gael et Ronan Le Viennesse Version :
+ * @author Le Roux Gael et Ronan Le Viennesse
  *
  */
 public class VersionFichier {
 
 	// declaration des variables de la classe VersionFichier
-	private int  id_version ;
+	private int id_version;
 	private int numéro_min;
 	private int numéro_maj;
 	private String contenu_version;
 	private String contenu_description;
-	private  int id_projet_java ;
+	private int id_projet_java;
 
 	// le constructeur de la classe VersionFichier
 	/**
 	 * Constructeur de la classe VersionFichier
 	 * 
-	 * @param mineur
-	 * @param majeur
-	 * @param contenu_v
+	 * @param id,numéro_maj,num_min ,contenu_v,description_v,id_projet_java
 	 */
-	public VersionFichier(int id_v, int majeur,int mineur, String contenu_v, String contenu_d , int id_projet_java) {
-		this.id_version = id_v ;
+	public VersionFichier(int id_v, int majeur, int mineur, String contenu_v, String contenu_d, int id_projet_java) {
+		this.id_version = id_v;
 		this.numéro_min = mineur;
 		this.numéro_maj = majeur;
 		this.contenu_version = contenu_v;
 		this.contenu_description = contenu_d;
-		this.id_projet_java = id_projet_java ;
+		this.id_projet_java = id_projet_java;
 
 	}
 
 	// getter de la classe VersionFichier
 	/**
-	 * getter de l'id  d'une version
+	 * getter de l'id d'une version
 	 * 
 	 * @return id_version
 	 */
 	public int getIdVersion() {
-		return id_version ;
+		return id_version;
 	}
+
 	/**
 	 * getter du numero mineur d'une version
 	 * 
@@ -78,10 +77,11 @@ public class VersionFichier {
 	public String getContenuDescription() {
 		return contenu_description;
 	}
+
 	/**
 	 * getter de la reference fichier de la version
 	 * 
-	 * @return id_fichier_version 
+	 * @return id_fichier_version
 	 */
 	public int getIdFichierVersion() {
 		return id_projet_java;
@@ -89,13 +89,14 @@ public class VersionFichier {
 
 	// setter de la classe VersionFichier
 	/**
-	 * Setter de l'id  d'une version
+	 * Setter de l'id d'une version
 	 * 
 	 * @param id_v
 	 */
 	public void setIdVersion(int id_v) {
 		this.id_version = id_v;
 	}
+
 	/**
 	 * Setter du numéro mineur d'une version
 	 * 
@@ -132,8 +133,9 @@ public class VersionFichier {
 		this.contenu_description = contenu_d;
 
 	}
+
 	/**
-	 * Setter de l'id fichier de la version 
+	 * Setter de l'id fichier de la version
 	 * 
 	 * @param id_fichier_v
 	 */
@@ -141,15 +143,15 @@ public class VersionFichier {
 		this.id_projet_java = id_fichier_v;
 
 	}
-	// méthode de la classe VersionFichier  :
+
+	// méthode de la classe VersionFichier :
 	/**
-	* Redéfinition de la méthode toString permettant de définir la traduction de
-	l'objet en String
-	* pour l'affichage par exemple
-	*/
+	 * Redéfinition de la méthode toString permettant de définir la traduction de
+	 * l'objet en String pour l'affichage par exemple
+	 */
 	public String toString() {
-	return "["+id_version+"]| version:["+numéro_maj+"."+numéro_min+"]| "
-			+ "contenu:"+contenu_version+"|description:"+contenu_description+"|projet:["+id_projet_java+"]" ;
-	
+		return "[" + id_version + "]| version:[" + numéro_maj + "." + numéro_min + "]| " + "contenu:" + contenu_version
+				+ "|description:" + contenu_description + "|projet:[" + id_projet_java + "]";
+
 	}
 }

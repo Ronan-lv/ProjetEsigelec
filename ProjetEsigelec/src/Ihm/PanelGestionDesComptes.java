@@ -22,6 +22,13 @@ import javax.swing.JTextArea;
 
 import moteur.Utilisateur;
 
+/**
+ * Classe PanelGestionDesComptes , permet l'affichage pour gérer les comptes du
+ * logiciel
+ * 
+ * @author Le Roux Gael , Le Viennesse Ronan
+ *
+ */
 public class PanelGestionDesComptes extends PanelGenerique implements ActionListener {
 
 	private JPanel panelHaut;
@@ -41,11 +48,14 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 
 	private JLabel titrePanelDroite;
 	private JTextArea champDeRecherche;
-	private JButton boutonValider;
-	private JLabel resultatRecherche;
 	private JButton boutonAfficherHistorique;
 	private JButton boutonSupprimer;
 
+	/**
+	 * Constructeur de la classe PanelGestionDesComptes
+	 * 
+	 * @param fen
+	 */
 	public PanelGestionDesComptes(Fenetre fen) {
 
 		super(fen);
@@ -69,7 +79,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		this.titrePanelGauche.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.champLogin = new JTextArea("Login");
 		this.champLogin.setFont(policeTaille2);
-		this.champPassword = new JPasswordField("Password");
+		this.champPassword = new JPasswordField("");
 		this.champPassword.setFont(policeTaille2);
 		this.boutonAjouter = new JButton("Ajouter");
 		this.boutonAjouter.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -81,11 +91,6 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 		this.titrePanelDroite.setHorizontalAlignment(JLabel.CENTER);
 		this.champDeRecherche = new JTextArea("Nom d'utilisateur");
 		this.champDeRecherche.setFont(policeTaille2);
-		this.boutonValider = new JButton("Valider");
-		this.boutonValider.setFont(policeTaille2);
-		this.resultatRecherche = new JLabel("");
-		this.resultatRecherche.setFont(policeTaille2);
-		this.resultatRecherche.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.boutonAfficherHistorique = new JButton("Historique");
 		this.boutonAfficherHistorique.setFont(policeTaille2);
 		this.boutonAfficherHistorique.addActionListener(this);
@@ -132,8 +137,6 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 
 		this.panelDroite.add(this.titrePanelDroite);
 		this.panelDroite.add(this.champDeRecherche);
-		this.panelDroite.add(this.boutonValider);
-		this.panelDroite.add(this.resultatRecherche);
 		this.panelDroite.add(this.boutonAfficherHistorique);
 		this.panelDroite.add(this.boutonSupprimer);
 
@@ -154,6 +157,12 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 
 	}
 
+	/**
+	 * Méthode qui permet de gérer les évenement d'un utilisateur sur le
+	 * PanelGestionDesComptes , souris ,clavier ...
+	 * 
+	 * @param e , la source d'un evenement
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -185,13 +194,13 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				JOptionPane.showMessageDialog(null, " L'identifiant existe déjà ");
 			}
 			if (utilisateurtrouver == false) {
-				if (this.champPassword.getPassword().length >= 3 ) {
+				if (this.champPassword.getPassword().length >= 3 && this.champLogin.getText() != "login") {
 					this.fen.getDaoUtilisateur()
-					.ajouter(new Utilisateur(this.champLogin.getText(), this.champPassword.getText(), false));
-			JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
-				}
-				else {
-					JOptionPane.showMessageDialog(null, " mot de passe inférieur à 3 caractères ");
+							.ajouter(new Utilisateur(this.champLogin.getText(), this.champPassword.getText(), false));
+					JOptionPane.showMessageDialog(null, " l'utilisateur à été ajouté ");
+				} else {
+					JOptionPane.showMessageDialog(null,
+							" mot de passe inférieur à 3 caractères , ou identifiant incorrect ");
 				}
 
 			}
@@ -205,20 +214,20 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				if (this.champDeRecherche.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
 
 					utilisateurtrouver = true;
-				} else {
-					utilisateurtrouver = false;
 				}
-
 			}
 			if (utilisateurtrouver == false) {
 				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");
 			}
 			if (utilisateurtrouver == true) {
+				if (JOptionPane.showConfirmDialog(this, "Êtes-vous sûr de vouloir supprimer l'utilisateur ?", "Suppresion",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
 				this.fen.getDaoUtilisateur().supprimer(this.champDeRecherche.getText());
 				JOptionPane.showMessageDialog(null, " L'utilisateur a été supprimé ");
+				}
 			}
 		}
-		if (e.getSource()== this.boutonAfficherHistorique) {
+		if (e.getSource() == this.boutonAfficherHistorique) {
 			boolean utilisateurtrouver = false;
 
 			for (int i = 0; i < listeUtilisateurs.size(); i++) {
@@ -226,10 +235,7 @@ public class PanelGestionDesComptes extends PanelGenerique implements ActionList
 				if (this.champDeRecherche.getText().equals(listeUtilisateurs.get(i).getIdentifiant())) {
 
 					utilisateurtrouver = true;
-				} else {
-					utilisateurtrouver = false;
 				}
-
 			}
 			if (utilisateurtrouver == false) {
 				JOptionPane.showMessageDialog(null, " L'utilisateur n'existe pas ");

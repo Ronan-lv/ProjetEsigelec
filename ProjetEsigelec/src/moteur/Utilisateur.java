@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author Gael Leroux et Ronan Le Viennesse version : La classe utilisateur du
+ * @author Gael Leroux et Ronan Le Viennesse , La classe utilisateur du
  *         logiciel
  */
 public class Utilisateur {
@@ -17,7 +17,6 @@ public class Utilisateur {
 	
 	
 	private ArrayList<ProjetJava> listeprojet;
-	private Historique historique_utilisateur;
 
 	// le constructeur de Utilisateur
 	/**
@@ -71,13 +70,7 @@ public class Utilisateur {
 	public boolean getIsGestionnaire() {
 		return isGestionnaire;
 	}
-	/**
-	 * getter pour récupérer l'historique d'un utilisateur 
-	 * @return historique_utilisateur
-	 */
-    public Historique getHistoriqueUtilisateur () {
-    	return historique_utilisateur ;
-    }
+
     /**
      * getter pour récupérer la liste des projet d'un utilisateur 
      * @return listeprojet

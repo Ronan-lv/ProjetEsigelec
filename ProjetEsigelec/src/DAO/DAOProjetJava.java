@@ -10,14 +10,19 @@ import java.util.ArrayList;
 
 import moteur.ProjetJava;
 
+/**
+ * Classe DAOProjetJava,permet de faire le lien avec la table Fichier (BDD)
+ * 
+ * @author Gael Le Roux et Ronan Le Viennesse
+ */
 public class DAOProjetJava {
 	/**
 	 * Paramètres de connexion à la base de données oracle URL, LOGIN et PASS sont
 	 * des constantes
 	 */
 	final static String URL = "jdbc:oracle:thin:@localhost:1521:xe";
-	final static String LOGIN = "C##GAEL"; // exemple BDD8 C##GAEL
-	final static String PASS = "digitalx76"; // exemple BDD8 digitalx76
+	final static String LOGIN = "C##GAEL"; // exemple BDD8 ou C##GAEL
+	final static String PASS = "digitalx76"; // exemple BDD8 ou digitalx76
 
 	/**
 	 * Constructeur de la classe
@@ -87,8 +92,7 @@ public class DAOProjetJava {
 	 *         référence
 	 */
 	public ProjetJava getProjetJava(int reference) {
-		
-		
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -104,12 +108,10 @@ public class DAOProjetJava {
 			rs = ps.executeQuery();
 			// passe à la première (et unique) ligne retournée
 			if (rs.next()) {
-				retour = new ProjetJava(rs.getInt("id"), rs.getString("nom"),
-						rs.getString("destination"), rs.getDate("date_fichier"),
-						rs.getInt("id_fichier_uti"));
+				retour = new ProjetJava(rs.getInt("id"), rs.getString("nom"), rs.getString("destination"),
+						rs.getDate("date_fichier"), rs.getInt("id_fichier_uti"));
 			}
-				
-			
+
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		} finally {
@@ -151,8 +153,8 @@ public class DAOProjetJava {
 			rs = ps.executeQuery();
 			// on parcourt les lignes du résultat
 			while (rs.next())
-				retour.add(new ProjetJava(rs.getInt("id"), rs.getString("nom"),
-						rs.getString("destination"), rs.getDate("date_fichier") , rs.getInt("id_fichier_uti")));
+				retour.add(new ProjetJava(rs.getInt("id"), rs.getString("nom"), rs.getString("destination"),
+						rs.getDate("date_fichier"), rs.getInt("id_fichier_uti")));
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		} finally {
@@ -175,64 +177,119 @@ public class DAOProjetJava {
 		}
 		return retour;
 	}
-		/**
-		 * Permet de récupérer tous les projets stockés dans la table projetjava pour un utilisateur donné 
-		 *
-		 * @return une ArrayList de projet
-		 */
-		public ArrayList<ProjetJava> getListeProjetJavaUtilisateur( int reference) {
-			Connection con = null;
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-			ArrayList<ProjetJava> retour = new ArrayList<ProjetJava>();
-			// connexion à la base de données
+
+	/**
+	 * Permet de récupérer tous les projets stockés dans la table projetjava pour un
+	 * utilisateur donné
+	 * 
+	 * @param reference l'id de l'utilisateur
+	 * @return une ArrayList de projet
+	 */
+	public ArrayList<ProjetJava> getListeProjetJavaUtilisateur(int reference) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<ProjetJava> retour = new ArrayList<ProjetJava>();
+		// connexion à la base de données
+		try {
+			con = DriverManager.getConnection(URL, LOGIN, PASS);
+			ps = con.prepareStatement(
+					"SELECT * " + "FROM fichier INNER JOIN utilisateur ON (utilisateur.id = id_fichier_uti)"
+							+ " WHERE utilisateur.id = ? ORDER BY date_fichier DESC");
+			ps.setInt(1, reference);
+
+			// on exécute la requête
+			rs = ps.executeQuery();
+			// on parcourt les lignes du résultat
+			while (rs.next())
+				retour.add(new ProjetJava(rs.getInt("id"), rs.getString("nom"), rs.getString("destination"),
+						rs.getDate("date_fichier"), rs.getInt("id_fichier_uti")));
+		} catch (Exception ee) {
+			ee.printStackTrace();
+		} finally {
+			// fermeture du rs, du preparedStatement et de la connexion
 			try {
-				con = DriverManager.getConnection(URL, LOGIN, PASS);
-				ps = con.prepareStatement("SELECT * "
-						+ "FROM fichier INNER JOIN utilisateur ON (utilisateur.id = id_fichier_uti)"
-						+ " WHERE utilisateur.id = ? ORDER BY date_fichier DESC");
-				ps.setInt(1, reference);
-				
-				// on exécute la requête
-				rs = ps.executeQuery();
-				// on parcourt les lignes du résultat
-				while (rs.next())
-					retour.add(new ProjetJava(rs.getInt("id"), rs.getString("nom"),
-							rs.getString("destination"), rs.getDate("date_fichier") , rs.getInt("id_fichier_uti")));
-			} catch (Exception ee) {
-				ee.printStackTrace();
-			} finally {
-				// fermeture du rs, du preparedStatement et de la connexion
-				try {
-					if (rs != null)
-						rs.close();
-				} catch (Exception ignore) {
-				}
-				try {
-					if (ps != null)
-						ps.close();
-				} catch (Exception ignore) {
-				}
-				try {
-					if (con != null)
-						con.close();
-				} catch (Exception ignore) {
-				}
+				if (rs != null)
+					rs.close();
+			} catch (Exception ignore) {
 			}
-			return retour;
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (con != null)
+					con.close();
+			} catch (Exception ignore) {
+			}
+		}
+		return retour;
 	}
-		
-		
+
+	/**
+	 * méthode qui permet de récuperer une liste de projet selon le nom d'un
+	 * utilisateur pour l'historique
+	 * 
+	 * @param reference le nom de l'utilisateur
+	 * @return ArrayList ProjetJava
+	 */
+	public ArrayList<ProjetJava> getListeProjetJavaUtilisateurHistorique(String reference) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<ProjetJava> retour = new ArrayList<ProjetJava>();
+		// connexion à la base de données
+		try {
+			con = DriverManager.getConnection(URL, LOGIN, PASS);
+			ps = con.prepareStatement(
+					"SELECT * " + "FROM fichier INNER JOIN utilisateur ON (utilisateur.id = id_fichier_uti)"
+							+ " WHERE utilisateur.identifiant = ? ORDER BY date_fichier DESC");
+			ps.setString(1, reference);
+
+			// on exécute la requête
+			rs = ps.executeQuery();
+			// on parcourt les lignes du résultat
+			while (rs.next())
+				retour.add(new ProjetJava(rs.getInt("id"), rs.getString("nom"), rs.getString("destination"),
+						rs.getDate("date_fichier"), rs.getInt("id_fichier_uti")));
+		} catch (Exception ee) {
+			ee.printStackTrace();
+		} finally {
+			// fermeture du rs, du preparedStatement et de la connexion
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (con != null)
+					con.close();
+			} catch (Exception ignore) {
+			}
+		}
+		return retour;
+	}
+
+	/**
+	 * Méthode qui permet de récupérer l'id max de tous les projets
+	 * 
+	 * @return int retour
+	 */
 	public int recupererDernierProjetJavaAjoute() {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int retour = 0;
 
-
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT MAX(id) FROM fichier");		
+			ps = con.prepareStatement("SELECT MAX(id) FROM fichier");
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
@@ -260,8 +317,12 @@ public class DAOProjetJava {
 		}
 		return retour;
 	}
-	
-	
+
+	/**
+	 * Méthode qui permet de supprimer un projetJava selon son id
+	 * 
+	 * @param idProjetASupprime
+	 */
 	public void supprimerProjetJava(int idProjetASupprime) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -272,8 +333,6 @@ public class DAOProjetJava {
 			ps = con.prepareStatement("DELETE FROM fichier WHERE id = ?");
 			ps.setInt(1, idProjetASupprime);
 			rs = ps.executeQuery();
-			
-			
 
 		} catch (Exception ee) {
 			ee.printStackTrace();
@@ -296,7 +355,13 @@ public class DAOProjetJava {
 			}
 		}
 	}
-	
+
+	/**
+	 * Méthode qui permet de récuperer le numéro majeur d'un projet selon son id
+	 * 
+	 * @param idProjetJava
+	 * @return int retour
+	 */
 	public int recupererMajeurVersionProjetJava(int idProjetJava) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -305,12 +370,12 @@ public class DAOProjetJava {
 
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT num_maj FROM version WHERE id_fichier_version = ?");
+			ps = con.prepareStatement("SELECT MAX(num_maj) FROM version WHERE id_fichier_version = ?");
 			ps.setInt(1, idProjetJava);
 			rs = ps.executeQuery();
-			
+
 			while (rs.next()) {
-				retour = rs.getInt("num_maj");
+				retour = rs.getInt("Max(num_maj)");
 			}
 
 		} catch (Exception ee) {
@@ -333,37 +398,78 @@ public class DAOProjetJava {
 			} catch (Exception ignore) {
 			}
 		}
-		
+
 		return retour;
 	}
-		
-    //------------------------------------TEST DAO PROJETJAVA---------------------------------------------- 
-	/**
-	// main permettant de tester la classe 
-		 public static void main(String[] args) throws SQLException {
-		   DAOProjetJava DAOprojet = new DAOProjetJava(); 
-		   
-		  // test de la méthode ajouter 
 
-		   ProjetJava p1 = new ProjetJava(1, "projet_test","destination 1", new Date(System.currentTimeMillis()) , 1);
-	      int retour = DAOprojet.ajouter(p1);
-		  System.out.println(retour + " lignes ajoutées"); 
-		 // test de la méthode getArticle 
-		  ProjetJava p2 = DAOprojet.getProjetJava(1);
-		  System.out.println(p2); 
-		  
-		  // test de la méthode getListeProjet 
-		  ArrayList<ProjetJava> liste = DAOprojet.getListeProjetJava(); 
-		  // affichage des projets 
-		  for (ProjetJava proj :liste) { 
-			  System.out.println(proj.toString());  
-			  } 
-			  
-			  // test de la méthode getListeProjetJavaUtilisateur
-			   ArrayList<ProjetJava> liste_projet_utilisateur = DAOprojet.gestListeProjetJavaUtilisateur(1)
-			     // affichage des projets 
-		  for (ProjetJava proj :liste_projet_utilisateur) { 
-			  System.out.println(proj.toString());
-		  }
+	/**
+	 * Méthode qui permet de récupérer le numéro mineur dune version selon id d'un
+	 * projet
+	 * 
+	 * @param idProjetJava
+	 * @return
+	 */
+	public int recupererMineurVersionProjetJava(int idProjetJava) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int retour = 0;
+
+		try {
+			con = DriverManager.getConnection(URL, LOGIN, PASS);
+			ps = con.prepareStatement("SELECT MAX(num_min) FROM version WHERE id_fichier_version = ?");
+			ps.setInt(1, idProjetJava);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				retour = rs.getInt("Max(num_min)");
+			}
+
+		} catch (Exception ee) {
+			ee.printStackTrace();
+		} finally {
+			// fermeture du rs, du preparedStatement et de la connexion
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (ps != null)
+					ps.close();
+			} catch (Exception ignore) {
+			}
+			try {
+				if (con != null)
+					con.close();
+			} catch (Exception ignore) {
+			}
+		}
+
+		return retour;
+	}
+
+	// ------------------------------------TEST DAO
+	// PROJETJAVA----------------------------------------------
+	/**
+	 * // main permettant de tester la classe public static void main(String[] args)
+	 * throws SQLException { DAOProjetJava DAOprojet = new DAOProjetJava();
+	 * 
+	 * // test de la méthode ajouter
+	 * 
+	 * ProjetJava p1 = new ProjetJava(1, "projet_test","destination 1", new
+	 * Date(System.currentTimeMillis()) , 1); int retour = DAOprojet.ajouter(p1);
+	 * System.out.println(retour + " lignes ajoutées"); // test de la méthode
+	 * getArticle ProjetJava p2 = DAOprojet.getProjetJava(1);
+	 * System.out.println(p2);
+	 * 
+	 * // test de la méthode getListeProjet ArrayList<ProjetJava> liste =
+	 * DAOprojet.getListeProjetJava(); // affichage des projets for (ProjetJava proj
+	 * :liste) { System.out.println(proj.toString()); }
+	 * 
+	 * // test de la méthode getListeProjetJavaUtilisateur ArrayList<ProjetJava>
+	 * liste_projet_utilisateur = DAOprojet.gestListeProjetJavaUtilisateur(1) //
+	 * affichage des projets for (ProjetJava proj :liste_projet_utilisateur) {
+	 * System.out.println(proj.toString()); }
 	 */
 }

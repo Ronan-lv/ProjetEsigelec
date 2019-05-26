@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.sql.Date;
 
 /**
+ *  La classe ProjetJava du logiciel
+ * @author Gael Le Roux et Ronan Le Viennesse 
  * 
- * @author Gael Le Roux et Ronan Le Viennesse version : La classe ProjetJava du
- *         logiciel
  */
 public class ProjetJava {
 // déclaration des variables de la classe ProjetJava

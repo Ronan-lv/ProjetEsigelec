@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import moteur.VersionFichier;
 
 /**
- * Classe DAO VersionFichier ,permet de faire le lien avec la table version
+ * Classe DAO VersionFichier ,permet de faire le lien avec la table Version
  * (BDD)
  * 
- * @author Gael Le Roux et Ronan Le Viennesse version :
+ * @author Gael Le Roux et Ronan Le Viennesse version
  */
 public class DAOVersionFichier {
 	/**
-	 * Paramètres de connexion à la base de données oracle URL, LOGIN et PASS sont
+	 * Paramï¿½tres de connexion ï¿½ la base de donnï¿½es oracle URL, LOGIN et PASS sont
 	 * des constantes
 	 */
 	final static String URL = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -29,7 +29,7 @@ public class DAOVersionFichier {
 	 *
 	 */
 	public DAOVersionFichier() {
-		// chargement du pilote de bases de données
+		// chargement du pilote de bases de donnï¿½es
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 		} catch (ClassNotFoundException e) {
@@ -40,31 +40,32 @@ public class DAOVersionFichier {
 	}
 
 	/**
-	 * Permet d'ajouter une dans la table version Le mode est auto-commit par défaut
-	 * : chaque insertion est validée
+	 * Permet d'ajouter une dans la table version Le mode est auto-commit par dï¿½faut
+	 * : chaque insertion est validï¿½e
 	 *
-	 * @param versionfichier la version à ajouter
-	 * @return retourne le nombre de lignes ajoutées dans la table
+	 * @param versionfichier la version ï¿½ ajouter
+	 * @return retourne le nombre de lignes ajoutï¿½es dans la table
 	 */
 	public int ajouter(VersionFichier version) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		int retour = 0;
-		// connexion à la base de données
+		// connexion ï¿½ la base de donnï¿½es
 		try {
 			// tentative de connexion
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			// préparation de l'instruction SQL, chaque ? représente une valeur
-			// à communiquer dans l'insertion
-			// les getters permettent de récupérer les valeurs des attributs
-			// souhaités
-			ps = con.prepareStatement("INSERT INTO version (num_maj,num_min,contenu,description,id_fichier_version) VALUES (?, ?, ?, ?, ?)");
+			// prï¿½paration de l'instruction SQL, chaque ? reprï¿½sente une valeur
+			// ï¿½ communiquer dans l'insertion
+			// les getters permettent de rï¿½cupï¿½rer les valeurs des attributs
+			// souhaitï¿½s
+			ps = con.prepareStatement(
+					"INSERT INTO version (num_maj,num_min,contenu,description,id_fichier_version) VALUES (?, ?, ?, ?, ?)");
 			ps.setInt(1, version.getNumeroMaj());
 			ps.setInt(2, version.getNumeroMin());
 			ps.setString(3, version.getContenuVersion());
 			ps.setString(4, version.getContenuDescription());
 			ps.setInt(5, version.getIdFichierVersion());
-			// Exécution de la requête
+			// Exï¿½cution de la requï¿½te
 			retour = ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,27 +86,27 @@ public class DAOVersionFichier {
 	}
 
 	/**
-	 * Permet de récupérer une version java à partir de sa référence
+	 * Permet de rï¿½cupï¿½rer une version java ï¿½ partir de sa rï¿½fï¿½rence
 	 *
-	 * @param reference la référence de la version
-	 * @return version trouvé; null si aucune version ne correspond à cette
-	 *         référence
+	 * @param reference la rï¿½fï¿½rence de la version
+	 * @return version trouvï¿½; null si aucune version ne correspond ï¿½ cette
+	 *         rï¿½fï¿½rence
 	 */
 	public VersionFichier getVersionFichier(int reference) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		VersionFichier retour = null;
-		// connexion à la base de données
+		// connexion ï¿½ la base de donnï¿½es
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
 			ps = con.prepareStatement("SELECT * FROM version WHERE id =?");
 			ps.setInt(1, reference);
-			// on exécute la requête
-			// rs contient un pointeur situé jusute avant la première ligne
-			// retournée
+			// on exï¿½cute la requï¿½te
+			// rs contient un pointeur situï¿½ jusute avant la premiï¿½re ligne
+			// retournï¿½e
 			rs = ps.executeQuery();
-			// passe à la première (et unique) ligne retournée
+			// passe ï¿½ la premiï¿½re (et unique) ligne retournï¿½e
 			if (rs.next())
 				retour = new VersionFichier(rs.getInt("id"), rs.getInt("num_maj"), rs.getInt("num_min"),
 						rs.getString("contenu"), rs.getString("description"), rs.getInt("id_fichier_version"));
@@ -133,8 +134,9 @@ public class DAOVersionFichier {
 	}
 
 	/**
-	 * Permet de récupérer tous les versions stockés dans la table version
-	 *
+	 * Permet de rï¿½cupï¿½rer tous les versions stockï¿½s dans la table version
+	 * 
+	 * @param idProjetJava l'id du projet
 	 * @return une ArrayList de version
 	 */
 	public ArrayList<VersionFichier> getListeVersion(int idProjetJava) {
@@ -142,14 +144,14 @@ public class DAOVersionFichier {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		ArrayList<VersionFichier> retour = new ArrayList<VersionFichier>();
-		// connexion à la base de données
+		// connexion ï¿½ la base de donnï¿½es
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT * FROM version WHERE id_fichier_version= ?");
+			ps = con.prepareStatement("SELECT * FROM version WHERE id_fichier_version= ? ORDER BY  id DESC ");
 			ps.setInt(1, idProjetJava);
-			// on exécute la requête
+			// on exï¿½cute la requï¿½te
 			rs = ps.executeQuery();
-			// on parcourt les lignes du résultat
+			// on parcourt les lignes du rï¿½sultat
 			while (rs.next())
 				retour.add(new VersionFichier(rs.getInt("id"), rs.getInt("num_maj"), rs.getInt("num_min"),
 						rs.getString("contenu"), rs.getString("description"), rs.getInt("id_fichier_version")));
@@ -175,57 +177,45 @@ public class DAOVersionFichier {
 		}
 		return retour;
 	}
-	// -----------------------------------------TEST DE LA DAO VERSIONFICHIER
-	// ---------------------------------------
 
 	/**
-	 * // main permettant de tester la classe public static void main(String[] args)
-	 * throws SQLException { DAOVersionFichier DAOversion = new DAOVersionFichier();
-	 * // test de la méthode ajouter VersionFichier v1 = new
-	 * VersionFichier(1,1,0,"contenu1","description1" , 1);
+	 * Mï¿½thode qui permet de rï¿½cupï¿½rer la derniï¿½re version d'un Projet selon son id
 	 * 
-	 * int retour = DAOversion.ajouter(v1); System.out.println(retour + " lignes
-	 * ajoutées"); // test de la méthode getArticle VersionFichier v2 =
-	 * DAOversion.getVersionFichier(1); System.out.println(v2); // test de la
-	 * méthode getListeArticles ArrayList<VersionFichier> liste =
-	 * DAOversion.getListeVersion(); // affichage des articles for (VersionFichier v
-	 * : liste) { System.out.println(v.toString()); } }
+	 * @param idProjetJava , l'id du projet
+	 * @return VersionFichier la derniï¿½re version du projet
 	 */
-
-
 	public VersionFichier getDerniereVersionFichierDuProjet(int idProjetJava) {
-		
+
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		VersionFichier retour = null;
 
-		
-		// connexion à la base de données
+		// connexion ï¿½ la base de donnï¿½es
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
 			System.out.println(idProjetJava);
-			ps = con.prepareStatement("SELECT * FROM version WHERE id_fichier_version = ? ORDER BY num_maj DESC");
+			ps = con.prepareStatement("SELECT * FROM version "
+					+ "WHERE id_fichier_version = ? AND num_min = (SELECT MAX(num_min) FROM version WHERE id_fichier_version = ?) "
+					+ "ORDER BY num_maj DESC");
 			ps.setInt(1, idProjetJava);
-			// on exécute la requête
-			// rs contient un pointeur situé jusute avant la première ligne
-			// retournée
+			ps.setInt(2, idProjetJava);
+			// on exï¿½cute la requï¿½te
+			// rs contient un pointeur situï¿½ jusute avant la premiï¿½re ligne
+			// retournï¿½e
 			rs = ps.executeQuery();
-			
-			// passe à la première (et unique) ligne retournée
+
+			// passe ï¿½ la premiï¿½re (et unique) ligne retournï¿½e
 			if (rs.next()) {
 				retour = new VersionFichier(rs.getInt("id"), rs.getInt("num_maj"), rs.getInt("num_min"),
 						rs.getString("contenu"), rs.getString("description"), rs.getInt("id_fichier_version"));
-				
-			}
-			else {
-				System.out.println("Le fichier non trouvé  !");
-				//Permet d'éviter le plantage en cas d'erreur
+
+			} else {
+				System.out.println("Le fichier non trouvï¿½  !");
+				// Permet d'ï¿½viter le plantage en cas d'erreur
 				retour = new VersionFichier(0, 0, 0, "Le fichier n'existe pas", "erreur du fichier", 0);
 			}
-				
 
-			
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		} finally {
@@ -249,7 +239,22 @@ public class DAOVersionFichier {
 		return retour;
 	}
 
+	// -----------------------------------------TEST DE LA DAO VERSIONFICHIER
+	// ---------------------------------------
 
+	/**
+	 * // main permettant de tester la classe public static void main(String[] args)
+	 * throws SQLException { DAOVersionFichier DAOversion = new DAOVersionFichier();
+	 * // test de la mï¿½thode ajouter VersionFichier v1 = new
+	 * VersionFichier(1,1,0,"contenu1","description1" , 1);
+	 * 
+	 * int retour = DAOversion.ajouter(v1); System.out.println(retour + " lignes
+	 * ajoutï¿½es"); // test de la mï¿½thode getArticle VersionFichier v2 =
+	 * DAOversion.getVersionFichier(1); System.out.println(v2); // test de la
+	 * mï¿½thode getListeArticles ArrayList<VersionFichier> liste =
+	 * DAOversion.getListeVersion(); // affichage des articles for (VersionFichier v
+	 * : liste) { System.out.println(v.toString()); } }
+	 */
 
 	public void supprimerVersionFichier(int idVersion) {
 		Connection con = null;

@@ -13,79 +13,104 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class PanelMenu extends PanelGenerique implements ActionListener{
+/**
+ * Classe PanelMenu , permet l'affichage du menu de notre logiciel
+ * 
+ * @author Le Roux Gael et Ronan Le Viennesse
+ *
+ */
+public class PanelMenu extends PanelGenerique implements ActionListener {
 
 	private JButton boutonLogOut;
 	private JLabel encartTexte;
 	private JButton boutonDocumentsReferences;
 	private JButton boutonExplorateurDeFichier;
 	private JButton boutonGestionUtilisateur;
-	
+
 	private JPanel panelHaut;
 	private JPanel panelBas;
-	
-	
+
+	/**
+	 * Constructeur de la Classe PanelMenu
+	 * 
+	 * @param fen
+	 */
 	public PanelMenu(Fenetre fen) {
-		
+
 		super(fen);
-		
+
 		this.boutonLogOut = new JButton("Log out");
 		this.boutonLogOut.addActionListener(this);
 		this.encartTexte = new JLabel("Menu");
 		this.encartTexte.setHorizontalAlignment(this.encartTexte.CENTER);
 		this.encartTexte.setVerticalAlignment(this.encartTexte.TOP);
 		this.encartTexte.setFont(policeTaille2);
-		
+
 		this.boutonDocumentsReferences = new JButton("Documents référencés");
 		this.boutonDocumentsReferences.addActionListener(this);
 		this.boutonExplorateurDeFichier = new JButton("Explorateur de fichier");
 		this.boutonExplorateurDeFichier.addActionListener(this);
 		this.boutonGestionUtilisateur = new JButton("Gestion des utilisateurs");
 		this.boutonGestionUtilisateur.addActionListener(this);
-		
+
 		this.panelHaut = new JPanel();
 		this.panelHaut.setBorder(BorderFactory.createEmptyBorder(10, 0, 50, 10));
 		this.panelHaut.setLayout(new BorderLayout());
-		
+
 		this.panelBas = new JPanel();
 		this.panelBas.setLayout(new GridLayout(0, 3, 10, 0));
 		this.panelBas.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
 
-		
-		this.panelHaut.add(this.boutonLogOut, BorderLayout.EAST);
-		this.panelBas.add(this.boutonDocumentsReferences);
-		this.panelBas.add(this.boutonExplorateurDeFichier);
-		this.panelBas.add(this.boutonGestionUtilisateur);
-		
+		if (this.fen.getUtilisateurActif().getIsGestionnaire() == true) {
+			this.panelBas.setLayout(new GridLayout(0, 3, 10, 0));
+			this.panelBas.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
+			this.panelHaut.add(this.boutonLogOut, BorderLayout.EAST);
+			this.panelBas.add(this.boutonDocumentsReferences);
+			this.panelBas.add(this.boutonExplorateurDeFichier);
+			this.panelBas.add(this.boutonGestionUtilisateur);
+		}
+		if (this.fen.getUtilisateurActif().getIsGestionnaire() == false) {
+			this.panelBas.setLayout(new GridLayout(2, 0, 10, 0));
+			this.panelBas.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
+			this.panelHaut.add(this.boutonLogOut, BorderLayout.EAST);
+			this.panelBas.add(this.boutonDocumentsReferences);
+			this.panelBas.add(this.boutonExplorateurDeFichier);
+		}
+
 		this.setLayout(new GridLayout(6, 0));
 		this.add(this.panelHaut);
 		this.add(this.encartTexte);
 		this.add(this.panelBas);
-		
+
 	}
 
-
+	/**
+	 * Méthode qui permet de gérer les évenement d'un utilisateur sur le PanelMenu ,
+	 * souris ,clavier ...
+	 * 
+	 * @param e , la source d'un evenement
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if(e.getSource() == this.boutonLogOut) {
+
+		if (e.getSource() == this.boutonLogOut) {
 			this.fen.setContentPane(new PanelConnexion(this.fen));
 			this.fen.revalidate();
 		}
 
-		if(e.getSource() == this.boutonDocumentsReferences) {
+		if (e.getSource() == this.boutonDocumentsReferences) {
 			this.fen.setContentPane(new PanelFichiersReferences(this.fen));
 			this.fen.revalidate();
 		}
-		if(e.getSource() == this.boutonExplorateurDeFichier) {
+		if (e.getSource() == this.boutonExplorateurDeFichier) {
 			this.fen.setContentPane(new PanelExplorateurDeFichiers(this.fen));
 			this.fen.revalidate();
 		}
-		if(e.getSource() == this.boutonGestionUtilisateur) {
+		if (e.getSource() == this.boutonGestionUtilisateur) {
 			this.fen.setContentPane(new PanelGestionDesComptes(this.fen));
 			this.fen.revalidate();
 		}
-		
+
 	}
-	
+
 }

@@ -8,6 +8,12 @@ import java.util.ArrayList;
 
 import moteur.Utilisateur;
 
+/**
+ * Classe DAOUtilisateur ,permet de faire le lien avec la table Utilisateur
+ * (BDD)
+ * 
+ * @author Gael Le Roux et Ronan Le Viennesse
+ */
 public class DAOUtilisateur {
 	/**
 	 * Paramètres de connexion à la base de données oracle URL, LOGIN et PASS sont
@@ -168,6 +174,11 @@ public class DAOUtilisateur {
 		return retour;
 	}
 
+	/**
+	 * Méthode qui permet de récupérer tout les identfiaint dans la BDD
+	 * 
+	 * @return ArrayList String identifiant
+	 */
 	public ArrayList<String> getListeIdentifiant() {
 		Connection con = null;
 		PreparedStatement ps = null;
