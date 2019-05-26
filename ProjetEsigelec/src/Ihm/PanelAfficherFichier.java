@@ -214,8 +214,8 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 			if(descriptionNouvelleVersion != null) {
 								
 				this.fen.getDaoVersionFichier().ajouter(new VersionFichier(0, 
-						0,
-						this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1, 
+						this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1,
+						0, 
 						this.contenuVersionChargeViaLectureFichier, 
 						descriptionNouvelleVersion, 
 						this.fen.getIntDeTest()));
@@ -230,6 +230,13 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 					JOptionPane.INFORMATION_MESSAGE);
 			
 		}
+		
+		if(e.getSource() == this.boutonAfficherAutresVersions) {
+			this.fen.setContentPane(new PanelAfficherVersions(this.fen));
+			this.fen.revalidate();
+		}
+		
+		
 		
 		if(e.getSource() == this.boutonRetour) {
 			this.fen.setContentPane(new PanelFichiersReferences(this.fen));

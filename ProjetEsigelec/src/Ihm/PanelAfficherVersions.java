@@ -18,12 +18,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.Border;
+import javax.swing.JTextArea;
 
 import moteur.ProjetJava;
+import moteur.VersionFichier;
 
-public class PanelFichiersReferences extends PanelGenerique implements ActionListener {
-
+public class PanelAfficherVersions extends PanelGenerique implements ActionListener {
 
 	private JPanel panelHaut;
 	private JPanel panelMilieu;
@@ -38,17 +38,18 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 	
 	private JButton boutonAfficher;
 	private JButton boutonSupprimer;
-	private JButton boutonAfficherLesVersions;
+	private JButton boutonRetour;
 	
 	private ArrayList<JButton> listeDeBoutons = new ArrayList<JButton>();
 	private int indexDernierBoutonSelectionne;
+	private int idVersionSelectionne;
 	
-	ArrayList<ProjetJava> listeProjetJava = this.fen.getDaoProjetJava().getListeProjetJavaUtilisateur(this.fen.getUtilisateurActif().getReference());
+	ArrayList<VersionFichier> listeVersionsFichiers = this.fen.getDaoVersionFichier().getListeVersion(this.fen.getIntDeTest());
 
 	
 
 	
-    public PanelFichiersReferences(Fenetre fen) {
+    public PanelAfficherVersions(Fenetre fen) {
     	
     	super(fen);
     	
@@ -92,8 +93,8 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 		this.boutonAfficher.addActionListener(this);
 		this.boutonSupprimer = new JButton("Supprimer");
 		this.boutonSupprimer.addActionListener(this);
-		this.boutonAfficherLesVersions = new JButton("Afficher Versions");
-		this.boutonAfficherLesVersions.addActionListener(this);
+		this.boutonRetour = new JButton("Retour");
+		this.boutonRetour.addActionListener(this);
 		
 	
 		//Ajouts des composants dans les panels
@@ -107,7 +108,7 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 		
 		this.panelBas.add(this.boutonAfficher);
 		this.panelBas.add(this.boutonSupprimer);
-		this.panelBas.add(this.boutonAfficherLesVersions);
+		this.panelBas.add(this.boutonRetour);
 		
 		//Configuration du panel général
 		
@@ -129,7 +130,7 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
     private void remplissageDuPanelMilieuAvecDesLignesGraphiques() {
     	
  
-    	for(int i = 0; i < listeProjetJava.size(); i++) {
+    	for(int i = 0; i < listeVersionsFichiers.size(); i++) {
     		
     		JButton uneLigneAffichage = new JButton();    
     		
@@ -141,15 +142,18 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
     										BorderFactory.createEmptyBorder(3, 3, 3, 3)
     									));
     	
-
-    		uneLigneAffichage.add(new JLabel(listeProjetJava.get(i).getDateProjet().toLocaleString()));
+    		
+    		
+    		uneLigneAffichage.add(new JLabel(Integer.toString(listeVersionsFichiers.get(i).getIdVersion())));
+    		uneLigneAffichage.add(Box.createHorizontalStrut(90));	
+    		
+    		uneLigneAffichage.add(new JLabel(Integer.toString(listeVersionsFichiers.get(i).getNumeroMaj() )));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));
     		
-    		uneLigneAffichage.add(new JLabel(listeProjetJava.get(i).getNomProjet()));
+    		uneLigneAffichage.add(new JLabel(listeVersionsFichiers.get(i).getContenuDescription()));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));
     		
-    		uneLigneAffichage.add(new JLabel(Integer.toString(this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(listeProjetJava.get(i).getIdProjet()))));
-    		uneLigneAffichage.add(Box.createHorizontalStrut(90));
+    		
     		
     		uneLigneAffichage.add(new JLabel("ligne n° " + i));
 
@@ -175,8 +179,6 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 			this.fen.revalidate();
 		}
 		
-		
-		
 		for(int i = 0; i < this.panelMilieu.getComponents().length; i++) {
 
 			if(e.getSource() == this.panelMilieu.getComponents()[i]) {
@@ -184,9 +186,9 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 				JButton btn = (JButton) this.panelMilieu.getComponents()[i];
 				JLabel label = (JLabel) btn.getComponent(2);
 				
-				for(int j = 0; j < this.listeProjetJava.size(); j ++) {
+				for(int j = 0; j < this.listeVersionsFichiers.size(); j ++) {
 					
-					if(this.listeProjetJava.get(j).getNomProjet().equals(label.getText())) {
+					if(Integer.toString( this.listeVersionsFichiers.get(j).getNumeroMaj() ).equals(label.getText())) {
 			
 						btn.setBorder(BorderFactory.createLineBorder(Color.black, 3));
 						
@@ -198,7 +200,9 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 						
 						this.indexDernierBoutonSelectionne = j;
 						
-						this.fen.setIntDeTest(this.listeProjetJava.get(j).getIdProjet());
+						System.out.println("ID de la version selectionné :" + this.listeVersionsFichiers.get(j).getIdVersion() );
+						
+						this.idVersionSelectionne = this.listeVersionsFichiers.get(j).getIdVersion();
 					}
 					
 				}
@@ -215,25 +219,23 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 		
 		if(e.getSource() == this.boutonSupprimer) {
 			
-			if(JOptionPane.showConfirmDialog(this, "Êtes-vous sûr de vouloir supprimer le projet ?", "Suppresion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
+			if(JOptionPane.showConfirmDialog(this, "Êtes-vous sûr de vouloir supprimer la Version ?", "Suppression", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
 				
-				this.fen.getDaoProjetJava().supprimerProjetJava(this.listeProjetJava.get(this.indexDernierBoutonSelectionne).getIdProjet());
+				this.fen.getDaoVersionFichier().supprimerVersionFichier(this.idVersionSelectionne);
 				
-				this.listeProjetJava.remove(this.indexDernierBoutonSelectionne);
+				this.listeVersionsFichiers.remove(this.indexDernierBoutonSelectionne);
 				
 				this.listeDeBoutons.remove(this.indexDernierBoutonSelectionne);
 				
-				this.fen.setContentPane(new PanelFichiersReferences(this.fen));
+				this.fen.setContentPane(new PanelAfficherVersions(this.fen));
 				this.fen.revalidate();
 			}
 		}
 		
-		if(e.getSource() == this.boutonAfficherLesVersions) {
-			this.fen.setContentPane(new PanelAfficherVersions(this.fen));
+		if(e.getSource() == this.boutonRetour) {
+			this.fen.setContentPane(new PanelFichiersReferences(this.fen));
 			this.fen.revalidate();
-			
 		}
-		
 		
 		
 		
@@ -243,6 +245,6 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 	}
 	
     
-    
-	
+
 }
+
