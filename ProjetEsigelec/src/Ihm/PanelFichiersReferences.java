@@ -184,7 +184,6 @@ public class PanelFichiersReferences extends PanelGenerique implements ActionLis
 		
 		
 		
-		for(int i = 0; i < this.panelMilieu.getComponents().length; i++) {
 
 		for (int i = 0; i < this.panelMilieu.getComponents().length; i++) {
 
