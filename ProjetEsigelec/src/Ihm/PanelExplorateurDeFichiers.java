@@ -152,7 +152,7 @@ public class PanelExplorateurDeFichiers extends PanelGenerique implements Action
 
 					this.fen.getDaoVersionFichier()
 							.ajouter(new VersionFichier(0, 1, 0, recupererContenuFichier(this.jfc.getSelectedFile()),
-									"La première description",
+									"La création du projet",
 									this.fen.getDaoProjetJava().recupererDernierProjetJavaAjoute()));
 
 					JOptionPane.showMessageDialog(null, "Le fichier a bien été référencé");

@@ -195,8 +195,11 @@ public class DAOVersionFichier {
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
 			System.out.println(idProjetJava);
-			ps = con.prepareStatement("SELECT * FROM version WHERE id_fichier_version = ? ORDER BY num_maj DESC");
+			ps = con.prepareStatement("SELECT * FROM version "
+					+ "WHERE id_fichier_version = ? AND num_min = (SELECT MAX(num_min) FROM version WHERE id_fichier_version = ?) "
+					+ "ORDER BY num_maj DESC");
 			ps.setInt(1, idProjetJava);
+			ps.setInt(2, idProjetJava);
 			// on exécute la requête
 			// rs contient un pointeur situé jusute avant la première ligne
 			// retournée

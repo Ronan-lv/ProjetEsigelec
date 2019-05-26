@@ -370,12 +370,12 @@ public class DAOProjetJava {
 
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT num_maj FROM version WHERE id_fichier_version = ?");
+			ps = con.prepareStatement("SELECT MAX(num_maj) FROM version WHERE id_fichier_version = ?");
 			ps.setInt(1, idProjetJava);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				retour = rs.getInt("num_maj");
+				retour = rs.getInt("Max(num_maj)");
 			}
 
 		} catch (Exception ee) {
@@ -417,12 +417,12 @@ public class DAOProjetJava {
 
 		try {
 			con = DriverManager.getConnection(URL, LOGIN, PASS);
-			ps = con.prepareStatement("SELECT num_min FROM version WHERE id_fichier_version = ?");
+			ps = con.prepareStatement("SELECT MAX(num_min) FROM version WHERE id_fichier_version = ?");
 			ps.setInt(1, idProjetJava);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				retour = rs.getInt("num_min");
+				retour = rs.getInt("Max(num_min)");
 			}
 
 		} catch (Exception ee) {

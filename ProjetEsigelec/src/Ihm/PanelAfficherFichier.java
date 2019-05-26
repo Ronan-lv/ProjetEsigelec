@@ -213,30 +213,73 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 
 		if (e.getSource() == this.boutonUpdateVersion) {
 
-			String descriptionNouvelleVersion;
+			String descriptionNouvelleVersion = null;
+			int choixVersionEvolution = 0 ; 
+			int choixVersionCorrection = 2;
 
-			descriptionNouvelleVersion = JOptionPane.showInputDialog(
-					this.fen, "Description de cette nouvelle version", "Version "
-							+ this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1,
-					JOptionPane.QUESTION_MESSAGE);
+			choixVersionEvolution = JOptionPane.showConfirmDialog(this.fen,"cette version est une evolution", "Version:",JOptionPane.YES_NO_OPTION);
 
-			if (descriptionNouvelleVersion != null) {
+			
+			if (choixVersionEvolution == 0 ) {
+				
+				descriptionNouvelleVersion = JOptionPane.showInputDialog(
+						this.fen, "Description de cette nouvelle version", "Version "
+								+ (this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1)
+								+"."+this.fen.getDaoProjetJava().recupererMineurVersionProjetJava(this.fen.getIntDeTest()),
+						JOptionPane.QUESTION_MESSAGE);
+				if (descriptionNouvelleVersion != null) {
 
-				this.fen.getDaoVersionFichier()
-						.ajouter(new VersionFichier(0,
-								this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest())
-										+ 1,
-								0, this.contenuVersionChargeViaLectureFichier, descriptionNouvelleVersion,
-								this.fen.getIntDeTest()));
+					this.fen.getDaoVersionFichier()
+							.ajouter(new VersionFichier(0,
+									this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest())
+											+ 1,
+											this.fen.getDaoProjetJava().recupererMineurVersionProjetJava(this.fen.getIntDeTest()), 
+											this.contenuVersionChargeViaLectureFichier, descriptionNouvelleVersion,
+									this.fen.getIntDeTest()));
+				}
 			}
+			if (choixVersionEvolution != 0) {
+				choixVersionCorrection = JOptionPane.showConfirmDialog(this.fen,"cette version est une correction", "Version:",JOptionPane.YES_NO_OPTION);
+			}
+		
+			if (choixVersionCorrection == 0 ) {
+			
+				descriptionNouvelleVersion = JOptionPane.showInputDialog(
+						this.fen, "Description de cette nouvelle version", "Version "
+								+ (this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) )
+								+"."+(this.fen.getDaoProjetJava().recupererMineurVersionProjetJava(this.fen.getIntDeTest())+1),
+						JOptionPane.QUESTION_MESSAGE);
+				if (descriptionNouvelleVersion != null) {
+
+					this.fen.getDaoVersionFichier()
+							.ajouter(new VersionFichier(0,
+									this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()),
+											this.fen.getDaoProjetJava().recupererMineurVersionProjetJava(this.fen.getIntDeTest())+1, 
+											this.contenuVersionChargeViaLectureFichier, descriptionNouvelleVersion,
+									this.fen.getIntDeTest()));
+				}
+			}
+			
+	
+			
+			
+
 
 			this.fen.setContentPane(new PanelAfficherFichier(this.fen));
 			this.fen.revalidate();
 
-			JOptionPane.showMessageDialog(this.fen,
-					"Vos modifications ont bien été enregistrés et le fichier est à jour", "Update réussit",
-					JOptionPane.INFORMATION_MESSAGE);
+			if (choixVersionEvolution !=0 && choixVersionCorrection !=0) {
+				JOptionPane.showMessageDialog(this.fen,
+						"Aucune modification a été enreistré , il faut indiquer le type de modification","Update échoué",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(this.fen,
+						"Vos modifications ont bien été enregistrés et le fichier est à jour", "Update réussit",
+						JOptionPane.INFORMATION_MESSAGE);
 
+			}
+	
 		}
 
 		if (e.getSource() == this.boutonRetour) {
