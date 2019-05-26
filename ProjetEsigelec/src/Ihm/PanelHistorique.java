@@ -140,7 +140,7 @@ public class PanelHistorique extends PanelGenerique implements ActionListener {
 				this.zoneAffichageCode.append("(VERSION N°:" + listeVersionFichier.get(j).getNumeroMaj() + "."
 						+ listeVersionFichier.get(j).getNumeroMin() + "):\n");
 				this.zoneAffichageCode
-						.append("DESCRIPTION:" + listeVersionFichier.get(j).getContenuDescription() + "\n\n");
+						.append("DESCRIPTION:	" + listeVersionFichier.get(j).getContenuDescription() + "\n\n");
 			}
 		}
 	}

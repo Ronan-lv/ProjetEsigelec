@@ -217,13 +217,13 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 			int choixVersionEvolution = 0 ; 
 			int choixVersionCorrection = 2;
 
-			choixVersionEvolution = JOptionPane.showConfirmDialog(this.fen,"cette version est une evolution", "Version:",JOptionPane.YES_NO_OPTION);
+			choixVersionEvolution = JOptionPane.showConfirmDialog(this.fen,"Cette version est une Evolution ?", "Version:",JOptionPane.YES_NO_OPTION);
 
 			
 			if (choixVersionEvolution == 0 ) {
 				
 				descriptionNouvelleVersion = JOptionPane.showInputDialog(
-						this.fen, "Description de cette nouvelle version", "Version "
+						this.fen, "Description de cette nouvelle Evolution :", "Version "
 								+ (this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) + 1)
 								+"."+this.fen.getDaoProjetJava().recupererMineurVersionProjetJava(this.fen.getIntDeTest()),
 						JOptionPane.QUESTION_MESSAGE);
@@ -239,13 +239,13 @@ public class PanelAfficherFichier extends PanelGenerique implements ActionListen
 				}
 			}
 			if (choixVersionEvolution != 0) {
-				choixVersionCorrection = JOptionPane.showConfirmDialog(this.fen,"cette version est une correction", "Version:",JOptionPane.YES_NO_OPTION);
+				choixVersionCorrection = JOptionPane.showConfirmDialog(this.fen,"Cette version est une correction ?", "Version:",JOptionPane.YES_NO_OPTION);
 			}
 		
 			if (choixVersionCorrection == 0 ) {
 			
 				descriptionNouvelleVersion = JOptionPane.showInputDialog(
-						this.fen, "Description de cette nouvelle version", "Version "
+						this.fen, "Description de cette nouvelle Correction :", "Version "
 								+ (this.fen.getDaoProjetJava().recupererMajeurVersionProjetJava(this.fen.getIntDeTest()) )
 								+"."+(this.fen.getDaoProjetJava().recupererMineurVersionProjetJava(this.fen.getIntDeTest())+1),
 						JOptionPane.QUESTION_MESSAGE);

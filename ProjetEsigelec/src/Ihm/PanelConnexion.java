@@ -45,10 +45,10 @@ public class PanelConnexion extends PanelGenerique implements ActionListener {
 		this.texteTitre.setFont(policeTaille2);
 		this.texteTitre.setHorizontalAlignment(this.texteTitre.CENTER);
 
-		this.champLogin = new JTextField("test1");
+		this.champLogin = new JTextField("admin");
 		this.champLogin.setFont(policeTaille2);
 
-		this.champPassword = new JPasswordField("test1");
+		this.champPassword = new JPasswordField("admin");
 		this.champPassword.setFont(policeTaille2);
 
 		this.bouttonValider = new JButton("Valider");
