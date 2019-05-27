@@ -84,7 +84,7 @@ public class PanelAfficherVersions extends PanelGenerique implements ActionListe
 		this.boutonLogOut = new JButton("LogOut");
 		this.boutonLogOut.addActionListener(this);
 		
-		this.titrePanel = new JLabel("Fichiers référencés");
+		this.titrePanel = new JLabel("Versions");
 		this.titrePanel.setFont(policeTaille2);
 		this.titrePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.titrePanel.setFont(this.policeTaille2);	
@@ -147,7 +147,8 @@ public class PanelAfficherVersions extends PanelGenerique implements ActionListe
     		uneLigneAffichage.add(new JLabel(Integer.toString(listeVersionsFichiers.get(i).getIdVersion())));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));	
     		
-    		uneLigneAffichage.add(new JLabel(Integer.toString(listeVersionsFichiers.get(i).getNumeroMaj() )));
+    		uneLigneAffichage.add(new JLabel(Integer.toString(listeVersionsFichiers.get(i).getNumeroMaj() )+"."
+    		+(Integer.toString(listeVersionsFichiers.get(i).getNumeroMin() ))));
     		uneLigneAffichage.add(Box.createHorizontalStrut(90));
     		
     		uneLigneAffichage.add(new JLabel(listeVersionsFichiers.get(i).getContenuDescription()));
@@ -155,7 +156,7 @@ public class PanelAfficherVersions extends PanelGenerique implements ActionListe
     		
     		
     		
-    		uneLigneAffichage.add(new JLabel("ligne n° " + i));
+    		uneLigneAffichage.add(new JLabel("ligne n° " + (i+1)));
 
     		this.panelMilieu.add(uneLigneAffichage);
     		    		
